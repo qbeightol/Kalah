@@ -63,8 +63,8 @@ public class KalahState implements State {
       return pitsInRangeEmpty(8,14);
   }
 
-  /*returns the numbers associated with pits in the range [start], inclusive, to 
-    [stop], exclusive that contain stones*/
+  /* returns the numbers associated with pits in the range [start], inclusive, to 
+     [stop], exclusive that contain stones */
   private Set<Integer> stockedPits(int start, int stop) {
     HashSet<Integer> pitNums = new HashSet<Integer>();
 
@@ -75,6 +75,23 @@ public class KalahState implements State {
     }
 
     return pitNums;
+  }
+  
+  /* returns a set of moves that the active player could legally make*/
+  private Set<KalahMove> validMoves(){
+    HashSet<KalahMove> result = new HashSet<KalahMove>();
+    
+    if (activePlayer == Player.ONE) {
+      for (int i : stockedPits(1, 7)){
+        result.add(new KalahMove(i));
+      }
+    } else {
+      for (int i : stockedPits(8, 14)) {
+        result.add(new KalahMove(i - 7));
+      }
+    }
+    
+    return result;
   }
   
   private KalahState sow(int startingPitNum, Player p){
