@@ -94,30 +94,39 @@ public class KalahState implements State {
     return result;
   }
   
-  private KalahState sow(int startingPitNum, Player p){
+  private KalahState sow(KalahMove m){
+    int houseNum = m.getHouseNumber();
+    int startingPitNum = 
+      (activePlayer == Player.ONE) ? 1 + houseNum : 7 + houseNum;
+    int currentPitNum = startingPitNum;
     int stones = pits[startingPitNum];
-    int currentPitNum = startingPitNum + 1;
+    
+    /* fresh variable since I'd like to avoiding manipulating the current 
+     * state: */
     int[] pits = this.pits;
-    int playerKalahNum = (p == Player.ONE) ? 7 : 0;
-    int opponentKalahNum = (p == Player.ONE) ? 0 : 7;
+    
+    int playerKalahNum = (activePlayer == Player.ONE) ? 7 : 0;
+    int opponentKalahNum = (activePlayer == Player.ONE) ? 0 : 7;
     Player nextActivePlayer;
     
     while (stones > 0){
+      currentPitNum++;
       if (currentPitNum != opponentKalahNum){
         pits[currentPitNum]++;
-        currentPitNum--;
+        stones--;
       }
     }
     
-    /* If the last stone is placed in the current player's kalah, they get to
-     * take a second turn*/
-    
-    nextActivePlayer = (currentPitNum + 1 == playerKalahNum) ? p : p.next();
+    nextActivePlayer = 
+      (currentPitNum == playerKalahNum) ? activePlayer : activePlayer.next();
     
     /*TODO add rules for capturing an opponent's stones*/
     
-    return new KalahState(pits, nextActivePlayer);       
+    return new KalahState(pits, nextActivePlayer);
+    
   }
+  
+
 
 /* Implementation of State Interface *****************************************/
 
@@ -127,6 +136,11 @@ public class KalahState implements State {
   @Override
   public Map<? extends Move, ? extends State> successors() {
     // TODO Auto-generated method stub
+    Hashtable<KalahMove, KalahState> result = 
+      new Hashtable<KalahMove, KalahState>();
+    for (KalahMove move : this.validMoves()){
+      result.put(move, this.sow(move));
+    }
     return null;
   }
 
