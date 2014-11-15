@@ -136,7 +136,7 @@ public class KalahState implements State {
   }
 
   @Override
-  public Map<? extends Move, ? extends State> successors() {
+  public Map<Move, State> successors() {
     // TODO Auto-generated method stub
     Hashtable<KalahMove, KalahState> result = 
       new Hashtable<KalahMove, KalahState>();
@@ -147,7 +147,7 @@ public class KalahState implements State {
   }
 
   @Override
-  public boolean terminal() {
+  public boolean isTerminal() {
     return housesEmpty(activePlayer);
   }
 
