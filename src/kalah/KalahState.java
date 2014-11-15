@@ -131,7 +131,9 @@ public class KalahState implements State {
 /* Implementation of State Interface *****************************************/
 
   @Override
-  public Player getActivePlayer() {return this.activePlayer;}
+  public Player getActivePlayer() {
+    return this.activePlayer;
+  }
 
   @Override
   public Map<? extends Move, ? extends State> successors() {
@@ -145,7 +147,9 @@ public class KalahState implements State {
   }
 
   @Override
-  public boolean terminal() {return housesEmpty(activePlayer);}
+  public boolean terminal() {
+    return housesEmpty(activePlayer);
+  }
 
   @Override
   public int utility(Player p) {
