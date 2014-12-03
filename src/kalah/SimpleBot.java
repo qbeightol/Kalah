@@ -1,6 +1,7 @@
 package kalah;
 
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import game.Move;
@@ -15,13 +16,15 @@ public class SimpleBot implements game.Bot {
      * (that way you can still use the other turn-granting moves) */
     
     Set<Move> candidateMoves = new HashSet<Move>();
-    
-    for (State nextState : s.successors().values()){
-      if (nextState.getActivePlayer() == s.getActivePlayer()){
-        candidateMoves.add(s.successors().)
+
+    for (Entry<Move, State> e : s.successors().entrySet()) {
+      if (e.getValue().getActivePlayer() == s.getActivePlayer()){
+        candidateMoves.add(e.getKey());
       }
-      
     }
+    
+    
+    
     
     // TODO Auto-generated method stub
     return null;
