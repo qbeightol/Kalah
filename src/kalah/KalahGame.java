@@ -15,7 +15,7 @@ public class KalahGame implements Game {
   @Override
   public void applyMove(Move m) throws game.exns.InvalidMove {
     
-    Map<? extends Move, ? extends State> succs = currentState.successors();
+    Map<Move,State> succs = currentState.successors();
     
     if (succs.keySet().contains(m)) 
       this.currentState = (KalahState) currentState.successors().get(m);
