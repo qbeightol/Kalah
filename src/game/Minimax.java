@@ -4,6 +4,7 @@ import java.util.Map;
 
 public class Minimax {
   
+<<<<<<< HEAD
   /* returns the move that the active player should make based of a minimax
    * analysis [depth] levels deep 
    * 
@@ -83,5 +84,11 @@ public class Minimax {
   /* TODO consider which methods we should actually include in the interface */
 
 
+=======
+	// evaluation function
+	public int eval() {
+		return 0;
+	}
+>>>>>>> aa38381bd6e481dc151a032b5069df08747595c4
 
 }
