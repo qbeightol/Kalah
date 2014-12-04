@@ -13,14 +13,17 @@ public class KalahGame implements Game {
   public State currentState() {return this.currentState;}
   
   @Override
-  public void applyMove(Move m) throws game.exns.InvalidMove {
+  public void applyMove(Move m) throws IllegalArgumentException {
     
     Map<Move,State> succs = currentState.successors();
     
-    if (succs.keySet().contains(m)) 
+    if (succs.keySet().contains(m)) {
       this.currentState = (KalahState) currentState.successors().get(m);
-    else 
-      throw new game.exns.InvalidMove();
+    } else {
+      String msg = "the provided move isn't legal (are you sure you supplied"
+                 + " a KalahMove?)";
+      throw new IllegalArgumentException(msg);
+    }
   }
   
   //hmmm...
