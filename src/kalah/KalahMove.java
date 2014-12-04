@@ -15,8 +15,12 @@ public class KalahMove {
     }
   }
 
+  /* returns which house the player will use when starting to sow seeds (from 
+   * the player's perspective, house 1 will be the left-most pit, and house 6
+   * will be  the right-most pit)*/
   public int getHouseNumber() {
     return houseNumber;
   }
+  
 
 }
