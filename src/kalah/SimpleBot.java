@@ -1,6 +1,7 @@
 package kalah;
 
 import java.util.Map.Entry;
+import java.util.Random;
 
 import game.Move;
 import game.Player;
@@ -40,7 +41,28 @@ public class SimpleBot implements game.Bot {
       }
     }
     
-    return scoreValue + secondTurnValue + distanceToRightValue + emptyPitsValue;
+    /* following Professor Selman's recommendation, we've decided to add some
+     * randomness to our bot's decision making process--that way, if too bots
+     * play against one another repeatedly, you'll get slightly different 
+     * results, and you'll be able to get a better sense for which bot is best
+     * (in contrast to wondering whether one bot did better simply by a quirk
+     * in the way each bot made decisions) */
+    Random random = new Random();
+    
+    /* only involve a small amount of randomness--the scoreValue and 
+     * secondTurnValue define the core of this bot's strategy and I think
+     * it makes sense not to override that behavior. I'll only contest the 
+     * choices introduces by the distanceToRightValue and emptyPitsValue, since 
+     * those are somewhat arbitrary and kind of intertwined; as a side note, the
+     * standard deviation for the noise
+     * is 2, which I think is appropriately small given how heavy the tails
+     * of the distribution are. */
+    int noise = random.nextInt(7);
+    
+    int returnVal = scoreValue + secondTurnValue + distanceToRightValue
+                  + emptyPitsValue + noise;
+    
+    return returnVal;
     
   }
 
