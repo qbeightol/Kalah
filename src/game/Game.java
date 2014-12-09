@@ -6,6 +6,6 @@ public interface Game {
   public State currentState();
   
   //applies a move to the current state
-  public void applyMove(Move m) throws game.exns.InvalidMove;
+  public void applyMove(Move m) ;
  
 }
