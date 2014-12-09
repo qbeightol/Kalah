@@ -7,9 +7,14 @@ public class Minimax {
    * analysis [depth] levels deep 
    * 
    * fails if [depth] <= 0 or if the game's current state is a terminal one*/
+  
+  /* idea: at some point, I should consider building a tree as I search the 
+   * space, and mark up the tree and re-order the nodes so that I can avoid
+   * duplicated work and try to make alpha-beta pruning more effective. */
+  
   public Move minimax(State state, int depth){
     if (depth <= 0) {
-      String msg = "minimax should be called with a postive depth";
+      String msg = "minimax should be called with a positive depth";
       throw new IllegalArgumentException(msg);
     } else if (state.isTerminal()){
       String msg = "minimax should be called on non-terminal states";
@@ -18,9 +23,6 @@ public class Minimax {
       String msg = "the supplied game's current state has no successors";
       throw new IllegalArgumentException(msg);
     } else if (depth == 1) {
-      /* Notice that the previous if block catches states with no successors;
-       * we can confidently assume that there is at least one legal move in the
-       * current state */
       Player activePlayer = state.getActivePlayer();
       Map<Move, State> succs = state.successors();
       Move result = succs.keySet().iterator().next();
@@ -47,6 +49,9 @@ public class Minimax {
       for (Move move : succs.KeySet()) {
         Move nextMove = minimax(succs.get(move), depth -1);
         int nextMoveUtil = succs.get(nextMove).utility(activePlayer);
+        
+        
+        
         Move naldkm
         int resultUtil = succs.get(result).utility(activePlayer);
         
