@@ -15,7 +15,7 @@ public class KalahState implements State {
   /*represents the pits on a kalah board--pit[0] is the kalah on the
     left-hand-side of the board, pits[1..6] are player 1's houses 1..6, pit[7]
     is the the large kalah on the right-hand-side of the board (i.e. player 1's
-    kalah, and pits[7..13] are player 2's houses 1..6. As a side note, the
+    kalah, and pits[8..13] are player 2's houses 1..6. As a side note, the
     number of stones in a pit can never be negative, and the total number of
     stones in the pits must always equal the number of starting stones */
   private int[] pits = new int[14];
@@ -156,6 +156,24 @@ public class KalahState implements State {
     // TODO Auto-generated method stub
     return 0;
   }
-
+  
+/* Getters *******************************************************************/
+  
+  /* returns the number of seeds in a given player's kalah */
+  public int kalahCount(Player p){
+    if (p == Player.ONE){
+      return pits[7];
+    } else {
+      return pits[0];
+    }
+  }
+  
+  public int getHouseCount(Player p, int num) {
+    if (p == Player.ONE){
+      return pits[num];
+    } else {
+      return pits[7 + num];
+    }
+  }
 
 }

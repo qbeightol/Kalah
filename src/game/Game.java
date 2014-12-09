@@ -6,6 +6,10 @@ public interface Game {
   public State currentState();
   
   //applies a move to the current state
+<<<<<<< HEAD
   public void applyMove(Move m) ;
+=======
+  public void applyMove(Move m) throws IllegalArgumentException;
+>>>>>>> bots
  
 }

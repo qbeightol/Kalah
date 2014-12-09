@@ -14,7 +14,10 @@ public interface State {
   //returns true if someone has won the game (and false otherwise)
   public boolean isTerminal();
   
-  //returns the "goodness" of a state from a particular player's perspective
+  /* returns the "goodness" of a state from a particular player's perspective; 
+   * the value should be positive if the game state favors [p], negative if it 
+   * favors the other player, and 0 otherwise. */
+      
   public int utility(Player p);
 
 }
