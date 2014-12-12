@@ -16,7 +16,8 @@ public class Main {
       Arrays.fill(xs2, 8, 14, 4);
       
       for (int x: xs2) System.out.println(x);
-    
+      EvalFunction e = new EvalFunction();
+      e.currentEval();
       
       
   }

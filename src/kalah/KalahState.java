@@ -146,6 +146,7 @@ public class KalahState implements State {
     return null;
   }
 
+
   @Override
   public boolean isTerminal() {
     return housesEmpty(activePlayer);
@@ -167,7 +168,7 @@ public class KalahState implements State {
       return pits[0];
     }
   }
-  
+ 
   public int getHouseCount(Player p, int num) {
     if (p == Player.ONE){
       return pits[num];

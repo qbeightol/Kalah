@@ -1,30 +1,86 @@
 package kalah;
 
+import game.Player;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
+import java.util.Arrays;
 import java.util.Random;
 
 
-public class KalahGUI extends JFrame {
+public class KalahGUI extends JFrame implements MouseListener {
 	private int kalahSize = 80;
 	private int ballSize = 20;
 	private static final long serialVersionUID = 1L;
 	private boolean start1 = false;
+	
+	
+	public static Player p1 = Player.ONE;
+	public static Player p2 = Player.TWO;
+	
+	private int[] pits = new int[14];
+	public static KalahState mancalaGame;
+	private KalahGame kg = new KalahGame();
+	private SimpleBot randomBot = new SimpleBot();
 	Random rand = new Random();
 	Random randomN = new Random();
+	
+	// Pits and houses
+	Rectangle2D house0 = new Rectangle2D.Double(50, 150, kalahSize, kalahSize*2+20);
+	Ellipse2D pit13 = new Ellipse2D.Double(150, 150, kalahSize, kalahSize);
+	Ellipse2D pit12 = new Ellipse2D.Double(250, 150, kalahSize, kalahSize);
+	Ellipse2D pit11 = new Ellipse2D.Double(350, 150, kalahSize, kalahSize);
+	Ellipse2D pit10 = new Ellipse2D.Double(450, 150, kalahSize, kalahSize);
+	Ellipse2D pit9 = new Ellipse2D.Double(550, 150, kalahSize, kalahSize);
+	Ellipse2D pit8 = new Ellipse2D.Double(650, 150, kalahSize, kalahSize);
+	
+	Rectangle2D house7 = new Rectangle2D.Double(750, 150, kalahSize, kalahSize*2+20);
+	Ellipse2D pit1 = new Ellipse2D.Double(150, 250, kalahSize, kalahSize);
+	Ellipse2D pit2 = new Ellipse2D.Double(250, 250, kalahSize, kalahSize);
+	Ellipse2D pit3 = new Ellipse2D.Double(350, 250, kalahSize, kalahSize);
+	Ellipse2D pit4 = new Ellipse2D.Double(450, 250, kalahSize, kalahSize);
+	Ellipse2D pit5 = new Ellipse2D.Double(550, 250, kalahSize, kalahSize);
+	Ellipse2D pit6 = new Ellipse2D.Double(650, 250, kalahSize, kalahSize);
+
+	private Ellipse2D[] drawn = new Ellipse2D[14];
+	
 	
 	public KalahGUI() {
 		super("Kalah");
 		setSize(900,500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		addMouseListener(this);
+		mancalaGame = new KalahState(pits, p1);
+		// how do I initialize using Kalah state??
+		Arrays.fill(pits, 1, 7, 4);
+	    Arrays.fill(pits, 8, 14, 4);
+
+	    // add drawn pits to array
+	   drawn[1] = pit1;
+	   drawn[2] = pit2;
+	   drawn[3] = pit3;
+	   drawn[4] = pit4;
+	   drawn[5] = pit5;
+	   drawn[6] = pit6;
+	   
+	   drawn[8] = pit8;
+	   drawn[9] = pit9;
+	   drawn[10] = pit10;
+	   drawn[11] = pit11;
+	   drawn[12] = pit12;
+	   drawn[13] = pit13;
+
 		
-		
-		
+		System.out.println("pit1: " + pits[1]);
 		// Choose 1ST Player
 		JPanel p2 = new JPanel();
 		JLabel txt1 = new JLabel("PLAYER 1");
@@ -202,46 +258,69 @@ public class KalahGUI extends JFrame {
 	public void radioBtn() {
 		
 	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	    int i = 0;
+	    while (i<14) {
+			if ((i!=0) && (i!=7)) {
+		    	if ((e.getButton() == 1) && drawn[i].contains(e.getX(), e.getY()) ) {
+			    	//start1 = false;
+			    	kg.applyMove(randomBot.requestMove(kg.currentState()));
+		    		System.out.println("clicked pit " + i);
+			    	repaint();
+			      //JOptionPane.showMessageDialog(null,e.getX()+ "\n" + e.getY());
+			    }
+			}
+			i++;
+	   }
+	}
 
+	
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(Color.RED);
-		g2d.drawOval(150, 150, kalahSize, kalahSize);
-		g2d.drawOval(250, 150, kalahSize, kalahSize);
-		g2d.drawOval(350, 150, kalahSize, kalahSize);
-		g2d.drawOval(450, 150, kalahSize, kalahSize);
-		g2d.drawOval(550, 150, kalahSize, kalahSize);
-		g2d.drawOval(650, 150, kalahSize, kalahSize);
-		g2d.drawRect(50, 150, kalahSize, kalahSize*2+20);
+		g2d.draw(pit1);
+		g2d.draw(pit2);
+		g2d.draw(pit3);
+		g2d.draw(pit4);
+		g2d.draw(pit5);
+		g2d.draw(pit6);
+		g2d.draw(house7);
 		
 		g2d.setColor(Color.BLUE);
-		g2d.drawOval(150, 250, kalahSize, kalahSize);
-		g2d.drawOval(250, 250, kalahSize, kalahSize);
-		g2d.drawOval(350, 250, kalahSize, kalahSize);
-		g2d.drawOval(450, 250, kalahSize, kalahSize);
-		g2d.drawOval(550, 250, kalahSize, kalahSize);
-		g2d.drawOval(650, 250, kalahSize, kalahSize);
-		g2d.drawRect(750, 150, kalahSize, kalahSize*2+20);
+		g2d.draw(pit8);
+		g2d.draw(pit9);
+		g2d.draw(pit10);
+		g2d.draw(pit11);
+		g2d.draw(pit12);
+		g2d.draw(pit13);
+		g2d.draw(house0);
+
+		// int randomNum = rand.nextInt((max - min) + 1) + min; 56, 206
 		
 		if (start1) {
+			int n = 0;
 			int i = 0;
-			int j = 0;
-			int k = 0;
-			while (k<2) {
-				while (j<6) {
-					while (i<4) {
-						g2d.setColor(randomColor());
-						g2d.fillOval(160+randomN.nextInt(49)+100*j, 160+10*(i+1)+100*k, ballSize, ballSize);
-						i++;
+			while (n<14) {
+				while (i<mancalaGame.getHouseCount(p1,n)) {
+					g2d.setColor(randomColor());
+					if (n==0) {
+						g2d.fillOval(60+randomN.nextInt(40), 170+randomN.nextInt(120), ballSize, ballSize);
+					} else if (n==7) {
+						g2d.fillOval(760+randomN.nextInt(40), 170+randomN.nextInt(120), ballSize, ballSize);
+					} else if (n>7) {
+						g2d.fillOval(160+randomN.nextInt(40)+100*(n-8), 160+randomN.nextInt(40)+100, ballSize, ballSize);
+					} else {
+						g2d.fillOval(160+randomN.nextInt(40)+100*(n-1), 160+randomN.nextInt(40), ballSize, ballSize);
 					}
-					i=0;
-					j++;
+					i++;
 				}
-				j=0;
-				k++;
+				i=0;
+				n++;
 			}
 		}
 	}
@@ -253,6 +332,32 @@ public class KalahGUI extends JFrame {
 		Color randomC = new Color(r, g, b);
 		return randomC;
 	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 
 	
 	

@@ -38,31 +38,31 @@ public class Minimax {
       }
       
       return result;
-      
-    } else {
+    } else return null; } }
+//    } else {
       /* since none of the other if blocks were triggered, depth >= 2 and the
        * current state has successors */
-      Player activePlayer = state.getActivePlayer();
-      Map<Move, State> succs = state. successors();
-      Move result = succs.keySet().iterator().next();
+//      Player activePlayer = state.getActivePlayer();
+//      Map<Move, State> succs = state. successors();
+//      Move result = succs.keySet().iterator().next();
       
-      for (Move move : succs.KeySet()) {
-        Move nextMove = minimax(succs.get(move), depth -1);
-        int nextMoveUtil = succs.get(nextMove).utility(activePlayer);
-        
-        
-        
-        Move naldkm
-        int resultUtil = succs.get(result).utility(activePlayer);
-        
-        if (move))
-        
-        
-        minimax()
-      }
-    }
+//      for (Move move : succs.KeySet()) {
+//        Move nextMove = minimax(succs.get(move), depth -1);
+//        int nextMoveUtil = succs.get(nextMove).utility(activePlayer);
+//        
+//        
+//        
+//        Move naldkm
+//        int resultUtil = succs.get(result).utility(activePlayer);
+//        
+//        if (move))
+//        
+//        
+//        minimax()
+//      }
+//    }
       
-    }
+//    }
   
 //  function minimax(node, depth, maximizingPlayer)
 //  if depth = 0 or node is a terminal node
@@ -86,4 +86,4 @@ public class Minimax {
 
   /* TODO consider which methods we should actually include in the interface */
 
-}
+//}
