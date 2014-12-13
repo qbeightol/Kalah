@@ -1,6 +1,8 @@
 package kalah;
 
-public class KalahMove {
+import game.Move;
+
+public class KalahMove implements Move{
   /* represents the number of the pit from which the player begins sowing seeds
    * invariant: must be an int between 1 and 6, inclusive*/
   private final int houseNumber;

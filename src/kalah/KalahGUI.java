@@ -1,5 +1,6 @@
 package kalah;
 
+import game.Move;
 import game.Player;
 
 import java.awt.*;
@@ -89,8 +90,9 @@ public class KalahGUI extends JFrame implements MouseListener {
 		JRadioButton r3 = new JRadioButton("Random");
 		JRadioButton r4 = new JRadioButton("Manual");
 		ButtonGroup g = new ButtonGroup();
+		
 		r1.addActionListener(new ActionListener() {
-			
+		
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("minimax1");
@@ -266,7 +268,7 @@ public class KalahGUI extends JFrame implements MouseListener {
 			if ((i!=0) && (i!=7)) {
 		    	if ((e.getButton() == 1) && drawn[i].contains(e.getX(), e.getY()) ) {
 			    	//start1 = false;
-			    	kg.applyMove(randomBot.requestMove(kg.currentState()));
+			    	kg.applyMove((Move) new KalahMove(i));
 		    		System.out.println("clicked pit " + i);
 			    	repaint();
 			      //JOptionPane.showMessageDialog(null,e.getX()+ "\n" + e.getY());
