@@ -1,7 +1,10 @@
 package game.minimax;
 
+import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.Future;
 
 import game.Bot;
 import game.Move;
@@ -139,9 +142,31 @@ public class MMBot implements Bot {
     }
   }
   
-  private Move timedMM(State s, int time2) {
-    // TODO Auto-generated method stub
-    return null;
+  /* Returns the number of milliseconds since January 1, 1970, 00:00:00 GMT */
+  private long getCurrentTime(){
+    return (new Date()).getTime();
+  }
+  
+  private Move timedMM(State state, int time) {
+    long startTime = getCurrentTime();
+    Iterator<Move> moveIter = state.successors().keySet().iterator();
+    Move secondLastGeneratedMove = moveIter.next();
+    Move lastGeneratedMove = moveIter.next();
+    int depth = 1;
+    
+    /* for simplicity's sake, Im going to let the bot take slightly longer than
+     * its alloted time, and then return the result that a more strictly timed 
+     * bot would have returned. In the future, we should consider using some
+     * concurrency magic to kill the process at exactly the right time. */
+    while ((getCurrentTime() - startTime) <= time){
+      secondLastGeneratedMove = lastGeneratedMove;
+      /* double-check alpha and beta choices: */
+      lastGeneratedMove = 
+        (Move) fixedDepthMM(state, depth, Integer.MIN_VALUE, Integer.MAX_VALUE);
+      depth++;
+    }
+
+    return secondLastGeneratedMove;
   }
     @Override
   public Move requestMove(State s) throws IllegalArgumentException {
