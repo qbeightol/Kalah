@@ -1,33 +1,16 @@
 package kalah;
 
-import game.Player;
-
-import java.awt.Color;
 import java.util.Arrays;
 
 
 public class Main {
 
-  private static void printKalahGameInfo(KalahGame g){
-    System.out.println("========");
-    System.out.println("active player: " + g.currentState().getActivePlayer());
-    for (int i = 1; i <= 6; i++){
-      System.out.println(((KalahState)g.currentState()).getHouseCount(Player.ONE, i));
-    }
-    System.out.println("player 1 kalah: " + ((KalahState) g.currentState()).kalahCount(Player.ONE));
-    for (int i = 1; i <= 6; i++){
-      System.out.println(((KalahState)g.currentState()).getHouseCount(Player.TWO, i));
-    }
-    System.out.println("player 2 kalah: " + ((KalahState) g.currentState()).kalahCount(Player.TWO));
-    System.out.println("========");
-  }
-
   public static void main(String[] args) {
     
     KalahGame kg = new KalahGame();
-    printKalahGameInfo(kg);
+    kg.printKalahGameInfo();
     kg.applyMove(KalahMove.ofInt(6));
-    printKalahGameInfo(kg);
+    kg.printKalahGameInfo();
 
 	  KalahGUI mankalah = new KalahGUI();
       mankalah.setVisible(true);

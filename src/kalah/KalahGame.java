@@ -2,6 +2,7 @@ package kalah;
 
 import game.Game;
 import game.Move;
+import game.Player;
 import game.State;
 
 import java.util.Map;
@@ -15,6 +16,8 @@ public class KalahGame implements Game {
 	   * code that allows you to choose how many seeds go in each house) */
 	  currentState = KalahState.initialState(4);
   }
+  
+  /* Implementation of the Game interace *************************************/
   
   @Override
   public State currentState() {return this.currentState;}
@@ -35,6 +38,20 @@ public class KalahGame implements Game {
   //hmmm...
   public KalahState currentKalahState() {return this.currentState;}
 
+  /* Additional utility functions ********************************************/
+  public void printKalahGameInfo(){
+    System.out.println("========");
+    System.out.println("active player: " + this.currentState().getActivePlayer());
+    for (int i = 1; i <= 6; i++){
+      System.out.println(((KalahState) this.currentState()).getHouseCount(Player.ONE, i));
+    }
+    System.out.println("player 1 kalah: " + ((KalahState) this.currentState()).kalahCount(Player.ONE));
+    for (int i = 1; i <= 6; i++){
+      System.out.println(((KalahState) this.currentState()).getHouseCount(Player.TWO, i));
+    }
+    System.out.println("player 2 kalah: " + ((KalahState) this.currentState()).kalahCount(Player.TWO));
+    System.out.println("========");
+  }
 	
   
 
