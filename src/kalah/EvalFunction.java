@@ -22,20 +22,22 @@ public class EvalFunction {
 		// TODO implement bonuses
 		int b = 0;
 		int c = 0;
-//		while (c<6) {
-//			if () {
-//				b = b + 
-//			}
-//			c++;
-//		}
+		while (c<6) {
+			if ((6-c) == m.getHouseCount(KalahGUI.p1, c+1)) {
+				b = b + 1;
+			}
+			if ((6-c) == m.getHouseCount(KalahGUI.p2,  c+1)){
+				b = b - 1;
+			}
+			c++;
+		}
 		int i = 0;
 		while (i<6) {
 			h = h + m.getHouseCount(KalahGUI.p1, i+1) - m.getHouseCount(KalahGUI.p2, i+1);
 			i++;
 		}
 		
-		
-		int result = k + h;
+		int result = k + h + b;
 		
 		System.out.println("hi " + result);
 		return result;
