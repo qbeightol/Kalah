@@ -24,7 +24,7 @@ public class KalahGame implements Game {
     Map<Move,State> succs = currentState.successors();
     
     if (succs.keySet().contains(m)) {
-      this.currentState = (KalahState) currentState.successors().get(m);
+      this.currentState = (KalahState) succs.get(m);
     } else {
       String msg = "the provided move isn't legal (are you sure you supplied"
                  + " a KalahMove?)";

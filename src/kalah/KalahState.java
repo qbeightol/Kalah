@@ -18,7 +18,7 @@ public class KalahState implements State {
     kalah, and pits[8..13] are player 2's houses 1..6. As a side note, the
     number of stones in a pit can never be negative, and the total number of
     stones in the pits must always equal the number of starting stones */
-  private int[] pits = new int[14];
+  private int[] pits;
 
 /* Constructors ***************************************************************/
 
@@ -49,18 +49,19 @@ public class KalahState implements State {
     exclusive do not contain stones */
   private boolean pitsInRangeEmpty(int start, int stop) {
     boolean result = true;
-    for (int i = start; i < stop; i++)
-      if (pits[i] != 0 ) result = false;
-
+    for (int i = start; i < stop; i++){
+      if (pits[i] != 0 ) {result = false;}
+    }
     return result;
   }
 
   //checks whether all of a player's houses no longer contains stones
   private boolean housesEmpty(Player p) {
-    if (p == Player.ONE)
+    if (p == Player.ONE) {
       return pitsInRangeEmpty(1, 7);
-    else
+    } else {
       return pitsInRangeEmpty(8,14);
+    }
   }
 
   /* returns the numbers associated with pits in the range [start], inclusive, to 
@@ -144,43 +145,64 @@ public class KalahState implements State {
     
     /* fresh variable since I'd like to avoiding manipulating the current 
      * state: */
-    int[] pits = this.pits;
+    /* oh wow--I made a really bad error eariler. I mistakenly thought that
+     * doing int[] pits_copy = this.pits would have created a new array that
+     * was a copy of the old one. Instead, it looks like I ended up having 
+     * pits_copy point to the original pits... woo Java.*/
+    int[] pits_copy = Arrays.copyOf(this.pits, this.pits.length);
     
     int playerKalahNum = (activePlayer == Player.ONE) ? 7 : 0;
     int opponentKalahNum = (activePlayer == Player.ONE) ? 0 : 7;
     Player nextActivePlayer;
     
+    /* remove the seeds from the appropriate pit */
+    pits_copy[startingPitNum] = 0;
+    
+    System.out.println(">>=== Begining to sow seeds ===<<");
+    
+    System.out.println(pits_copy);
+    System.out.println(currentPitNum);
+    System.out.println(stones);
+    
+    /* sow those seeds across the board */
     while (stones > 0){
+      
       if (currentPitNum == 13){
         currentPitNum = 0;
       } else {
         currentPitNum++;
       }
       if (currentPitNum != opponentKalahNum){
-        pits[currentPitNum]++;
+        pits_copy[currentPitNum]++;
         stones--;
       }
+      
+      System.out.println(pits_copy);
+      System.out.println(currentPitNum);
+      System.out.println(stones);
     }
     
+    System.out.println(">>=== No longer sowing seeds ===<<");
     
     /* rule for capturing opposing kalah's stones */
-    if(captureTriggered(currentPitNum, activePlayer)) {
-      /* move the last seed sown, and the seeds in the opposing house to 
-       * current player's Kalah */
-      
-      pits[currentPitNum] = 0;
-  
-      int opposingPitSeeds = pits[opposingPitNum(currentPitNum)];
-      pits[opposingPitNum(currentPitNum)] = 0;
-      
-      pits[playerKalahNum] = 1 + opposingPitSeeds;
-      
-    }
+    
+//    if(captureTriggered(currentPitNum, activePlayer)) {
+//      /* move the last seed sown, and the seeds in the opposing house to 
+//       * current player's Kalah */
+//      
+//      pits_copy[currentPitNum] = 0;
+//  
+//      int opposingPitSeeds = pits[opposingPitNum(currentPitNum)];
+//      pits_copy[opposingPitNum(currentPitNum)] = 0;
+//      
+//      pits_copy[playerKalahNum] = 1 + opposingPitSeeds;
+//      
+//    }
     
     nextActivePlayer = 
         (currentPitNum == playerKalahNum) ? activePlayer : activePlayer.next();
     
-    return new KalahState(pits, nextActivePlayer);
+    return new KalahState(pits_copy, nextActivePlayer);
     
   }
   
@@ -195,10 +217,10 @@ public class KalahState implements State {
 
   @Override
   public Map<Move, State> successors() {
-    // TODO Auto-generated method stub
-    Hashtable<Move, State> result = 
-      new Hashtable<Move, State>();
-    for (KalahMove move : this.validMoves()){
+    Hashtable<Move, State> result = new Hashtable<Move, State>();
+    Set<KalahMove> validMoves = this.validMoves();
+    
+    for (KalahMove move : validMoves){
       result.put(move, this.sow(move));
     }
     return result;

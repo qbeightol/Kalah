@@ -120,7 +120,14 @@ public class MMBot implements Bot {
       }
       
       for (Entry<Move, State> e : succs.entrySet()){
-        MMIntermediate intermediate = fixedDepthMM(e.getValue(), depth - 1, alpha, beta);
+        int new_alpha = alpha;
+        if (e.getValue().getActivePlayer() == activePlayer) {
+          MMIntermediate intermediate = fixedDepthMM(e.getValue(), depth - 1, alpha, beta);
+          int moveUtil = intermediate.utility;
+          new_alpha = Integer.max(moveUtil, alpha);
+          
+          
+        }
         
         /* if the player changes between turns, we need to update the utility
          * so that it's from the current player's perspective (which is done
@@ -160,7 +167,7 @@ public class MMBot implements Bot {
      * concurrency magic to kill the process at exactly the right time. */
     while ((getCurrentTime() - startTime) <= time){
       secondLastGeneratedMove = lastGeneratedMove;
-      /* double-check alpha and beta choices: */
+      /* TODO: double-check alpha and beta choices: */
       lastGeneratedMove = 
         (Move) fixedDepthMM(state, depth, Integer.MIN_VALUE, Integer.MAX_VALUE);
       depth++;
@@ -173,7 +180,8 @@ public class MMBot implements Bot {
     if (timed) {
       return timedMM(s, time);
     } else {
-      return fixedDepthMM(s, depth).move;
+      /* TODO: double check use of alpha beta args */
+      return fixedDepthMM(s, depth, Integer.MIN_VALUE, Integer.MAX_VALUE).move;
     }
   }
 

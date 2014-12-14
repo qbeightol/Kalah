@@ -264,14 +264,14 @@ public class KalahGUI extends JFrame implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 	    int i = 0;
-	    kg.applyMove(KalahMove.ofInt(1));
+	    //kg.applyMove(KalahMove.ofInt(1));
 	    while (i<14) {
 			if ((i!=0) && (i!=7)) {
 		    	if ((e.getButton() == 1) && drawn[i].contains(e.getX(), e.getY()) ) {
 			    	//start1 = false;
 		    	  System.out.println("clicked pit " + i);
 			    	
-		    	  //kg.applyMove(KalahMove.ofInt(1));
+		    	  kg.applyMove(KalahMove.ofInt(i));
 			    	repaint();
 			      //JOptionPane.showMessageDialog(null,e.getX()+ "\n" + e.getY());
 			    }
@@ -312,6 +312,7 @@ public class KalahGUI extends JFrame implements MouseListener {
 			int k0 = 0;
 			int k7 = 0;
 			while (n<14) {
+			  //System.out.println(kg);
 				while (i<((KalahState) kg.currentState()).getHouseCount(p1,n)) {
 					g2d.setColor(randomColor());
 					if (n==0) {
