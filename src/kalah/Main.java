@@ -16,7 +16,10 @@ public class Main {
     Bot p1 = new SimpleBot();
     Bot p2 = new RandomBot();
     
+    //kg.applyMove(p1.requestMove(kg.currentState()));
+    
     while (!kg.currentKalahState().isTerminal()){
+      kg.printKalahGameInfo();
       State currentState = kg.currentState();
       if (currentState.getActivePlayer() == Player.ONE){
         kg.applyMove(p1.requestMove(currentState));
