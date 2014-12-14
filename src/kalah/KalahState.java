@@ -129,7 +129,7 @@ public class KalahState implements State {
       (activePlayer == Player.ONE && lastSeedSownLoc >= 1 && lastSeedSownLoc <= 6)
       || (activePlayer == Player.TWO && lastSeedSownLoc >= 8 && lastSeedSownLoc <= 13);
 
-    boolean opposingKalahHasSeeds = pits[opposingPitNum(lastSeedSownLoc)] != 0;
+    boolean opposingKalahHasSeeds = NotInOwnKalah && pits[opposingPitNum(lastSeedSownLoc)] != 0;
     
     
     return InEmptyPit && NotInOwnKalah && NotInOpposingKalah && opposingKalahHasSeeds;
@@ -138,7 +138,7 @@ public class KalahState implements State {
   private KalahState sow(KalahMove m){
     int houseNum = m.getHouseNumber();
     int startingPitNum = 
-      (activePlayer == Player.ONE) ? 1 + houseNum : 7 + houseNum;
+      (activePlayer == Player.ONE) ? houseNum : 7 + houseNum;
     int currentPitNum = startingPitNum;
     int stones = pits[startingPitNum];
     
@@ -196,12 +196,12 @@ public class KalahState implements State {
   @Override
   public Map<Move, State> successors() {
     // TODO Auto-generated method stub
-    Hashtable<KalahMove, KalahState> result = 
-      new Hashtable<KalahMove, KalahState>();
+    Hashtable<Move, State> result = 
+      new Hashtable<Move, State>();
     for (KalahMove move : this.validMoves()){
       result.put(move, this.sow(move));
     }
-    return null;
+    return result;
   }
 
 
