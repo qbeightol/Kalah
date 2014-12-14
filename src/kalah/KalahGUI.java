@@ -194,18 +194,19 @@ public class KalahGUI extends JFrame implements MouseListener {
 			    	if ((e.getButton() == 1) && drawn[i].contains(e.getX(), e.getY()) ) {
 				    	//start1 = false;
 			    	  System.out.println("clicked pit " + i);
-		    		  kg.applyMove(KalahMove.ofInt(1));
+		    		  kg.applyMove(KalahMove.ofInt(i));
 			    	  repaint();
 				    }
 				} else if  ((i>7) && (i<14) && (((KalahState) kg.currentState()).getActivePlayer() == p2) ) {
 					if ((e.getButton() == 1) && drawn[i].contains(e.getX(), e.getY()) ) {
 			    	  System.out.println("clicked pit " + i);
-			    	  kg.applyMove(KalahMove.ofInt(i-7));
+			    	  kg.applyMove(KalahMove.ofInt(7-i));
 			    	  repaint();
 				    }
 				}
 				i++;
 		   }
+
 	   }
 	}
 
@@ -239,7 +240,9 @@ public class KalahGUI extends JFrame implements MouseListener {
 			int n = 0;
 			int i = 0;
 			while (n<14) {
-				System.out.println(((KalahState) kg.currentState()).getHouseCount(p1,n));
+
+				//System.out.println(((KalahState) kg.currentState()).getHouseCount(p1,n));
+
 				while (i<((KalahState) kg.currentState()).getHouseCount(p1,n)) {
 					g2d.setColor(randomColor());
 					if (n==0) {

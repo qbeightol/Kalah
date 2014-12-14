@@ -1,7 +1,10 @@
 package game.minimax;
 
+import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.Future;
 
 import game.Bot;
 import game.Move;
@@ -117,7 +120,14 @@ public class MMBot implements Bot {
       }
       
       for (Entry<Move, State> e : succs.entrySet()){
-        MMIntermediate intermediate = fixedDepthMM(e.getValue(), depth - 1, alpha, beta);
+        int new_alpha = alpha;
+        if (e.getValue().getActivePlayer() == activePlayer) {
+          MMIntermediate intermediate = fixedDepthMM(e.getValue(), depth - 1, alpha, beta);
+          int moveUtil = intermediate.utility;
+          new_alpha = Integer.max(moveUtil, alpha);
+          
+          
+        }
         
         /* if the player changes between turns, we need to update the utility
          * so that it's from the current player's perspective (which is done
@@ -125,12 +135,12 @@ public class MMBot implements Bot {
         int samePlayerMultiplier = 
             e.getValue().getActivePlayer() == activePlayer ? 1 : -1;
         
-        int moveUtil = samePlayerMultiplier * intermediate.utility;
+        //int moveUtil = samePlayerMultiplier * intermediate.utility;
          
-        if (moveUtil > resultUtil){
-          result = intermediate.move;
-          resultUtil = intermediate.utility;
-        }
+//        if (moveUtil > resultUtil){
+//          result = intermediate.move;
+//          resultUtil = intermediate.utility;
+//        }
       }
       /* this seems a little silly--I should probably just keep a copy of the
        * best MMIntermediate I generate and just return that */
@@ -139,18 +149,40 @@ public class MMBot implements Bot {
     }
   }
   
-  private Move timedMM(State s, int time2) {
-    // TODO Auto-generated method stub
-    return null;
+  /* Returns the number of milliseconds since January 1, 1970, 00:00:00 GMT */
+  private long getCurrentTime(){
+    return (new Date()).getTime();
+  }
+  
+  private Move timedMM(State state, int time) {
+    long startTime = getCurrentTime();
+    Iterator<Move> moveIter = state.successors().keySet().iterator();
+    Move secondLastGeneratedMove = moveIter.next();
+    Move lastGeneratedMove = moveIter.next();
+    int depth = 1;
+    
+    /* for simplicity's sake, Im going to let the bot take slightly longer than
+     * its alloted time, and then return the result that a more strictly timed 
+     * bot would have returned. In the future, we should consider using some
+     * concurrency magic to kill the process at exactly the right time. */
+    while ((getCurrentTime() - startTime) <= time){
+      secondLastGeneratedMove = lastGeneratedMove;
+      /* TODO: double-check alpha and beta choices: */
+      lastGeneratedMove = 
+        (Move) fixedDepthMM(state, depth, Integer.MIN_VALUE, Integer.MAX_VALUE);
+      depth++;
+    }
+
+    return secondLastGeneratedMove;
   }
     @Override
   public Move requestMove(State s) throws IllegalArgumentException {
-//    if (timed) {
-//      return timedMM(s, time);
-//    } else {
-//      return fixedDepthMM(s, depth).move;
-//    } 
-    	return null;
+    if (timed) {
+      return timedMM(s, time);
+    } else {
+      /* TODO: double check use of alpha beta args */
+      return fixedDepthMM(s, depth, Integer.MIN_VALUE, Integer.MAX_VALUE).move;
+    }
   }
 
 

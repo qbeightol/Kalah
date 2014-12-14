@@ -1,13 +1,32 @@
 package kalah;
 
+import game.Player;
+
 import java.awt.Color;
 import java.util.Arrays;
 
 
 public class Main {
 
+  private static void printKalahGameInfo(KalahGame g){
+    System.out.println("========");
+    System.out.println("player 1 kalah: " + ((KalahState) g.currentState()).kalahCount(Player.ONE));
+    for (int i = 1; i <= 6; i++){
+      System.out.println(((KalahState)g.currentState()).getHouseCount(Player.ONE, i));
+    }
+    System.out.println("player 2 kalah: " + ((KalahState) g.currentState()).kalahCount(Player.TWO));
+    for (int i = 1; i <= 6; i++){
+      System.out.println(((KalahState)g.currentState()).getHouseCount(Player.TWO, i));
+    }
+    System.out.println("========");
+  }
 
   public static void main(String[] args) {
+    
+    KalahGame kg = new KalahGame();
+    printKalahGameInfo(kg);
+    kg.applyMove(KalahMove.ofInt(1));
+    printKalahGameInfo(kg);
 
 	  KalahGUI mankalah = new KalahGUI();
       mankalah.setVisible(true);

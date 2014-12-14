@@ -34,8 +34,8 @@ public enum KalahMove implements Move{
     case 5: return FIVE;
     case 6: return SIX;
     default:
-      String msg = "KalahMove.ofInt(int n) received" + n 
-                 + "but expected a number between 1 and 6, inclusive";
+      String msg = "KalahMove.ofInt(int n) received " + n 
+                 + " but expected a number between 1 and 6, inclusive";
       throw new IllegalArgumentException(msg);
       
     }
