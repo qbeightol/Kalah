@@ -22,19 +22,17 @@ public class KalahGUI extends JFrame implements MouseListener {
 	private int kalahSize = 80;
 	private int ballSize = 20;
 	private static final long serialVersionUID = 1L;
-	private boolean start1 = true;
+	public static boolean start1 = false;
 	
 	
 	public static Player p1 = Player.ONE;
 	public static Player p2 = Player.TWO;
-	
-	private int[] pits = new int[14];
-	//public static KalahState mancalaGame;
+
 	private KalahGame kg = new KalahGame();
-	private SimpleBot randomBot = new SimpleBot();
+	private SimpleBot interBot = new SimpleBot();
 	Random rand = new Random();
 	Random randomN = new Random();
-	
+	private KalahState m = (KalahState) kg.currentState();
 	// Pits and houses
 	Rectangle2D house0 = new Rectangle2D.Double(50, 150, kalahSize, kalahSize*2+20);
 	Ellipse2D pit13 = new Ellipse2D.Double(150, 150, kalahSize, kalahSize);
@@ -54,6 +52,23 @@ public class KalahGUI extends JFrame implements MouseListener {
 
 	private Ellipse2D[] drawn = new Ellipse2D[14];
 	
+	// first player
+	JPanel panel2 = new JPanel();
+	JLabel txt1 = new JLabel("PLAYER 1");
+	JRadioButton r1 = new JRadioButton("MiniMax");
+	JRadioButton r2 = new JRadioButton("Intermediate");
+	JRadioButton r3 = new JRadioButton("Random");
+	JRadioButton r4 = new JRadioButton("Manual");
+	ButtonGroup g = new ButtonGroup();
+	// Choose 2ND Player
+	JPanel p3 = new JPanel();
+	JLabel txt2 = new JLabel("PLAYER 2");
+	JRadioButton rr1 = new JRadioButton("MiniMax");
+	JRadioButton rr2 = new JRadioButton("Intermediate");
+	JRadioButton rr3 = new JRadioButton("Random");
+	JRadioButton rr4 = new JRadioButton("Manual");
+	ButtonGroup g2 = new ButtonGroup();
+	
 	
 	public KalahGUI() {
 		super("Kalah");
@@ -62,8 +77,8 @@ public class KalahGUI extends JFrame implements MouseListener {
 		addMouseListener(this);
 		//mancalaGame = new KalahState(pits, p1);
 		// how do I initialize using Kalah state??
-		Arrays.fill(pits, 1, 7, 4);
-	    Arrays.fill(pits, 8, 14, 4);
+		//Arrays.fill(pits, 1, 7, 4);
+	    //Arrays.fill(pits, 8, 14, 4);
 
 	    // add drawn pits to array
 	   drawn[1] = pit1;
@@ -80,112 +95,20 @@ public class KalahGUI extends JFrame implements MouseListener {
 	   drawn[12] = pit12;
 	   drawn[13] = pit13;
 
-		
-		System.out.println("pit1: " + pits[1]);
 		// Choose 1ST Player
-		JPanel p2 = new JPanel();
-		JLabel txt1 = new JLabel("PLAYER 1");
-		JRadioButton r1 = new JRadioButton("MiniMax");
-		JRadioButton r2 = new JRadioButton("Intermediate");
-		JRadioButton r3 = new JRadioButton("Random");
-		JRadioButton r4 = new JRadioButton("Manual");
-		ButtonGroup g = new ButtonGroup();
-		
-		r1.addActionListener(new ActionListener() {
-		
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("minimax1");
-				// chooses minimax bot as opponent
-				
-			}
-		});
-        r2.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("intermediate1");
-				// chooses intermediate bot as opponent
-				
-			}
-		});
-        r3.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("random1");
-				// chooses random bot as opponent
-				
-			}
-		});
-        r3.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("manual1");
-				// chooses random bot as opponent
-				
-			}
-		});
-        
-        
 		g.add(r1);
 		g.add(r2);
 		g.add(r3);
 		g.add(r4);
-		p2.add(txt1);
-		p2.add(r1);
-		p2.add(r2);
-		p2.add(r3);
-		p2.add(r4);
+		panel2.add(txt1);
+		panel2.add(r1);
+		panel2.add(r2);
+		panel2.add(r3);
+		panel2.add(r4);
 		
+		add(panel2, BorderLayout.LINE_START);
 		
-		add(p2, BorderLayout.LINE_START);
-		
-		// Choose 2ND Player
-		JPanel p3 = new JPanel();
-		JLabel txt2 = new JLabel("PLAYER 2");
-		JRadioButton rr1 = new JRadioButton("MiniMax");
-		JRadioButton rr2 = new JRadioButton("Intermediate");
-		JRadioButton rr3 = new JRadioButton("Random");
-		JRadioButton rr4 = new JRadioButton("Manual");
-		ButtonGroup g2 = new ButtonGroup();
-		rr1.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("minimax2");
-				// chooses minimax bot as opponent
-				
-			}
-		});
-        rr2.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("intermediate2");
-				// chooses intermediate bot as opponent
-				
-			}
-		});
-        rr3.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("random2");
-				// chooses random bot as opponent
-				
-			}
-		});
-        rr4.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("manuel2");
-				// chooses random bot as opponent
-				
-			}
-		});
+		//2nd player
 		g2.add(rr1);
 		g2.add(rr2);
 		g2.add(rr3);
@@ -202,6 +125,7 @@ public class KalahGUI extends JFrame implements MouseListener {
 		JPanel p = new JPanel();
 		JButton b1 = new JButton("Start Game");
 		JButton b2 = new JButton("End Game");
+		//JLabel eval = new JLabel("Eval: " + this.currentEval());
 		b1.addActionListener(new ActionListener() {
 			
 			@Override
@@ -253,30 +177,36 @@ public class KalahGUI extends JFrame implements MouseListener {
 		});
 		p.add(b1);
 		p.add(b2);
+		//p.add(eval);
 		add(p, BorderLayout.SOUTH);
 
-	}
-	
-	public void radioBtn() {
-		
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 	    int i = 0;
 	    //kg.applyMove(KalahMove.ofInt(1));
-	    while (i<14) {
-			if ((i!=0) && (i!=7)) {
-		    	if ((e.getButton() == 1) && drawn[i].contains(e.getX(), e.getY()) ) {
-			    	//start1 = false;
-		    	  System.out.println("clicked pit " + i);
-			    	
-		    	  kg.applyMove(KalahMove.ofInt(i));
-			    	repaint();
-			      //JOptionPane.showMessageDialog(null,e.getX()+ "\n" + e.getY());
-			    }
-			}
-			i++;
+	    if (r4.isSelected()&&rr4.isSelected()) {
+			System.out.println("Human vs Human");
+			start1 = true;
+		    while (i<14) {
+				if ((i>0) && (i<7) && (((KalahState) kg.currentState()).getActivePlayer() == p1) ) {
+			    	if ((e.getButton() == 1) && drawn[i].contains(e.getX(), e.getY()) ) {
+				    	//start1 = false;
+			    	  System.out.println("clicked pit " + i);
+		    		  kg.applyMove(KalahMove.ofInt(i));
+			    	  repaint();
+				    }
+				} else if  ((i>7) && (i<14) && (((KalahState) kg.currentState()).getActivePlayer() == p2) ) {
+					if ((e.getButton() == 1) && drawn[i].contains(e.getX(), e.getY()) ) {
+			    	  System.out.println("clicked pit " + i);
+			    	  kg.applyMove(KalahMove.ofInt(i-7));
+			    	  repaint();
+				    }
+				}
+				i++;
+		   }
+
 	   }
 	}
 
@@ -309,10 +239,10 @@ public class KalahGUI extends JFrame implements MouseListener {
 		if (start1) {
 			int n = 0;
 			int i = 0;
-			int k0 = 0;
-			int k7 = 0;
 			while (n<14) {
-			  //System.out.println(kg);
+
+				//System.out.println(((KalahState) kg.currentState()).getHouseCount(p1,n));
+
 				while (i<((KalahState) kg.currentState()).getHouseCount(p1,n)) {
 					g2d.setColor(randomColor());
 					if (n==0) {
@@ -320,15 +250,16 @@ public class KalahGUI extends JFrame implements MouseListener {
 					} else if (n==7) {
 						g2d.fillOval(760+randomN.nextInt(40), 170+randomN.nextInt(120), ballSize, ballSize);
 					} else if (n>7) {
-						g2d.fillOval(160+randomN.nextInt(40)+100*(n-8), 160+randomN.nextInt(40)+100, ballSize, ballSize);
+						g2d.fillOval(160+randomN.nextInt(40)+100*(13-n), 160+randomN.nextInt(40), ballSize, ballSize);
 					} else {
-						g2d.fillOval(160+randomN.nextInt(40)+100*(n-1), 160+randomN.nextInt(40), ballSize, ballSize);
+						g2d.fillOval(160+randomN.nextInt(40)+100*(n-1), 160+randomN.nextInt(40)+100, ballSize, ballSize);
 					}
 					i++;
 				}
 				i=0;
 				n++;
 			}
+			currentEval();
 		}
 	}
 	
@@ -364,6 +295,34 @@ public class KalahGUI extends JFrame implements MouseListener {
 		
 	}
 
+	private int currentEval() {
+		if (KalahGUI.start1) {
+			int k = m.kalahCount(KalahGUI.p1) - m.kalahCount(KalahGUI.p2);
+			int h = 0;
+			// TODO implement bonuses
+			int b = 0;
+			int c = 0;
+			while (c<6) {
+				if ((6-c) == m.getHouseCount(KalahGUI.p1, c+1)) {
+					b = b + 1;
+				}
+				if ((6-c) == m.getHouseCount(KalahGUI.p2,  c+1)){
+					b = b - 1;
+				}
+				c++;
+			}
+			int i = 0;
+			while (i<6) {
+				h = h + m.getHouseCount(KalahGUI.p1, i+1) - m.getHouseCount(KalahGUI.p2, i+1);
+				i++;
+			}
+			
+			int result = k + h + b;
+			
+			System.out.println("State of Board " + result);
+			
+			return result; } else {return 1000;}
+	}
 	
 
 	

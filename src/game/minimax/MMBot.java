@@ -145,7 +145,7 @@ public class MMBot implements Bot {
           }
         }
         
-        
+    
         
         if (newBeta <= newAlpha){
           break;
