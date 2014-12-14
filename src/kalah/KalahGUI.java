@@ -200,7 +200,7 @@ public class KalahGUI extends JFrame implements MouseListener {
 				} else if  ((i>7) && (i<14) && (((KalahState) kg.currentState()).getActivePlayer() == p2) ) {
 					if ((e.getButton() == 1) && drawn[i].contains(e.getX(), e.getY()) ) {
 			    	  System.out.println("clicked pit " + i);
-			    	  kg.applyMove(KalahMove.ofInt(7-i));
+			    	  kg.applyMove(KalahMove.ofInt(i-7));
 			    	  repaint();
 				    }
 				}
@@ -250,9 +250,9 @@ public class KalahGUI extends JFrame implements MouseListener {
 					} else if (n==7) {
 						g2d.fillOval(760+randomN.nextInt(40), 170+randomN.nextInt(120), ballSize, ballSize);
 					} else if (n>7) {
-						g2d.fillOval(160+randomN.nextInt(40)+100*(n-8), 160+randomN.nextInt(40)+100, ballSize, ballSize);
+						g2d.fillOval(160+randomN.nextInt(40)+100*(13-n), 160+randomN.nextInt(40), ballSize, ballSize);
 					} else {
-						g2d.fillOval(160+randomN.nextInt(40)+100*(n-1), 160+randomN.nextInt(40), ballSize, ballSize);
+						g2d.fillOval(160+randomN.nextInt(40)+100*(n-1), 160+randomN.nextInt(40)+100, ballSize, ballSize);
 					}
 					i++;
 				}
