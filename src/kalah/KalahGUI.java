@@ -22,14 +22,14 @@ public class KalahGUI extends JFrame implements MouseListener {
 	private int kalahSize = 80;
 	private int ballSize = 20;
 	private static final long serialVersionUID = 1L;
-	private boolean start1 = false;
+	private boolean start1 = true;
 	
 	
 	public static Player p1 = Player.ONE;
 	public static Player p2 = Player.TWO;
 	
 	private int[] pits = new int[14];
-	public static KalahState mancalaGame;
+	//public static KalahState mancalaGame;
 	private KalahGame kg = new KalahGame();
 	private SimpleBot randomBot = new SimpleBot();
 	Random rand = new Random();
@@ -60,7 +60,7 @@ public class KalahGUI extends JFrame implements MouseListener {
 		setSize(900,500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		addMouseListener(this);
-		mancalaGame = new KalahState(pits, p1);
+		//mancalaGame = new KalahState(pits, p1);
 		// how do I initialize using Kalah state??
 		Arrays.fill(pits, 1, 7, 4);
 	    Arrays.fill(pits, 8, 14, 4);
@@ -264,12 +264,14 @@ public class KalahGUI extends JFrame implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 	    int i = 0;
+	    kg.applyMove(KalahMove.ofInt(1));
 	    while (i<14) {
 			if ((i!=0) && (i!=7)) {
 		    	if ((e.getButton() == 1) && drawn[i].contains(e.getX(), e.getY()) ) {
 			    	//start1 = false;
 		    	  System.out.println("clicked pit " + i);
-			    	kg.applyMove((Move) KalahMove.ofInt(i));
+			    	
+		    	  //kg.applyMove(KalahMove.ofInt(1));
 			    	repaint();
 			      //JOptionPane.showMessageDialog(null,e.getX()+ "\n" + e.getY());
 			    }
@@ -307,8 +309,10 @@ public class KalahGUI extends JFrame implements MouseListener {
 		if (start1) {
 			int n = 0;
 			int i = 0;
+			int k0 = 0;
+			int k7 = 0;
 			while (n<14) {
-				while (i<mancalaGame.getHouseCount(p1,n)) {
+				while (i<((KalahState) kg.currentState()).getHouseCount(p1,n)) {
 					g2d.setColor(randomColor());
 					if (n==0) {
 						g2d.fillOval(60+randomN.nextInt(40), 170+randomN.nextInt(120), ballSize, ballSize);
