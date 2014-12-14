@@ -268,8 +268,8 @@ public class KalahGUI extends JFrame implements MouseListener {
 			if ((i!=0) && (i!=7)) {
 		    	if ((e.getButton() == 1) && drawn[i].contains(e.getX(), e.getY()) ) {
 			    	//start1 = false;
-			    	kg.applyMove((Move) new KalahMove(i));
-		    		System.out.println("clicked pit " + i);
+		    	  System.out.println("clicked pit " + i);
+			    	kg.applyMove((Move) KalahMove.ofInt(i));
 			    	repaint();
 			      //JOptionPane.showMessageDialog(null,e.getX()+ "\n" + e.getY());
 			    }

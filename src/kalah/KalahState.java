@@ -83,11 +83,11 @@ public class KalahState implements State {
     
     if (activePlayer == Player.ONE) {
       for (int i : stockedPits(1, 7)){
-        result.add(new KalahMove(i));
+        result.add(KalahMove.ofInt(i));
       }
     } else {
       for (int i : stockedPits(8, 14)) {
-        result.add(new KalahMove(i - 7));
+        result.add(KalahMove.ofInt(i - 7));
       }
     }
     
