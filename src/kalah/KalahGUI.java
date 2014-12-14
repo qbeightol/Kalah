@@ -241,18 +241,26 @@ public class KalahGUI extends JFrame implements MouseListener {
 			int i = 0;
 			while (n<14) {
 
-				//System.out.println(((KalahState) kg.currentState()).getHouseCount(p1,n));
+				System.out.println(((KalahState) kg.currentState()).getHouseCount(p1,n));
 
 				while (i<((KalahState) kg.currentState()).getHouseCount(p1,n)) {
 					g2d.setColor(randomColor());
 					if (n==0) {
 						g2d.fillOval(60+randomN.nextInt(40), 170+randomN.nextInt(120), ballSize, ballSize);
+						g2d.setColor(Color.BLACK);
+						g2d.drawString(""+((KalahState) kg.currentState()).getHouseCount(p1,n), 60, 140);
 					} else if (n==7) {
 						g2d.fillOval(760+randomN.nextInt(40), 170+randomN.nextInt(120), ballSize, ballSize);
+						g2d.setColor(Color.BLACK);
+						g2d.drawString(""+((KalahState) kg.currentState()).getHouseCount(p1,n), 760, 140);
 					} else if (n>7) {
 						g2d.fillOval(160+randomN.nextInt(40)+100*(13-n), 160+randomN.nextInt(40), ballSize, ballSize);
+						g2d.setColor(Color.BLACK);
+						g2d.drawString(""+((KalahState) kg.currentState()).getHouseCount(p1,n), 160+100*(13-n), 140);
 					} else {
 						g2d.fillOval(160+randomN.nextInt(40)+100*(n-1), 160+randomN.nextInt(40)+100, ballSize, ballSize);
+						g2d.setColor(Color.BLACK);
+						g2d.drawString(""+((KalahState) kg.currentState()).getHouseCount(p1,n), 160+100*(n-1), 360);
 					}
 					i++;
 				}
