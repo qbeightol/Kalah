@@ -158,11 +158,11 @@ public class KalahState implements State {
     /* remove the seeds from the appropriate pit */
     pits_copy[startingPitNum] = 0;
     
-    System.out.println(">>=== Begining to sow seeds ===<<");
+    //System.out.println(">>=== Begining to sow seeds ===<<");
     
-    System.out.println(pits_copy);
-    System.out.println(currentPitNum);
-    System.out.println(stones);
+    //System.out.println(pits_copy);
+    //System.out.println(currentPitNum);
+    //System.out.println(stones);
     
     /* sow those seeds across the board */
     while (stones > 0){
@@ -177,12 +177,12 @@ public class KalahState implements State {
         stones--;
       }
       
-      System.out.println(pits_copy);
-      System.out.println(currentPitNum);
-      System.out.println(stones);
+      //System.out.println(pits_copy);
+      //System.out.println(currentPitNum);
+      //System.out.println(stones);
     }
     
-    System.out.println(">>=== No longer sowing seeds ===<<");
+    //System.out.println(">>=== No longer sowing seeds ===<<");
     
     /* rule for capturing opposing kalah's stones */
     
