@@ -145,11 +145,12 @@ public class MMBot implements Bot {
   }
     @Override
   public Move requestMove(State s) throws IllegalArgumentException {
-    if (timed) {
-      return timedMM(s, time);
-    } else {
-      return fixedDepthMM(s, depth).move;
-    }
+//    if (timed) {
+//      return timedMM(s, time);
+//    } else {
+//      return fixedDepthMM(s, depth).move;
+//    } 
+    	return null;
   }
 
 
