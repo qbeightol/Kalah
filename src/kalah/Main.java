@@ -1,5 +1,6 @@
 package kalah;
 
+import game.Bot;
 import game.Player;
 import game.RandomBot;
 import game.State;
@@ -12,8 +13,8 @@ public class Main {
   public static void main(String[] args) {
     
     KalahGame kg = new KalahGame();
-    RandomBot p1 = new RandomBot();
-    RandomBot p2 = new RandomBot();
+    Bot p1 = new SimpleBot();
+    Bot p2 = new RandomBot();
     
     while (!kg.currentKalahState().isTerminal()){
       State currentState = kg.currentState();
