@@ -199,7 +199,7 @@ public class KalahState implements State {
       int opposingPitSeeds = pits[opposingPitNum(currentPitNum)];
       pits_copy[opposingPitNum(currentPitNum)] = 0;
       
-      pits_copy[playerKalahNum] = 1 + opposingPitSeeds;
+      pits_copy[playerKalahNum] = pits_copy[playerKalahNum] + 1 + opposingPitSeeds;
       
     }
     
