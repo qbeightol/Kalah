@@ -100,9 +100,7 @@ public class MMBot implements Bot {
       
       return new MMIntermediate(result, resultUtil);
     } else {
-      // TODO implement code for updating alpha and beta values
       // TODO consider re-factoring code
-      // TODO 
       
       
       /* since none of the other if blocks were triggered, depth >= 2 and the
@@ -119,29 +117,41 @@ public class MMBot implements Bot {
         resultUtil = -fixedDepthMM(succs.get(result), depth - 1, alpha, beta).utility;
       }
       
+      
+      int newAlpha = alpha;
+      int newBeta = beta;
+      
+      
       for (Entry<Move, State> e : succs.entrySet()){
-        int new_alpha = alpha;
-        if (e.getValue().getActivePlayer() == activePlayer) {
-          MMIntermediate intermediate = fixedDepthMM(e.getValue(), depth - 1, alpha, beta);
-          int moveUtil = intermediate.utility;
-          new_alpha = Integer.max(moveUtil, alpha);
+        /* if the player didn't change between turns */
+        if (e.getValue().getActivePlayer() == activePlayer){
+          MMIntermediate inter = fixedDepthMM(e.getValue(), depth - 1, newAlpha, newBeta);
+          int moveUtil = inter.utility;
+          newAlpha = Integer.max(newAlpha, moveUtil);
           
+          if (moveUtil > resultUtil){
+            result = inter.move;
+            resultUtil = moveUtil;
+          }
           
+        } else {
+          MMIntermediate inter = fixedDepthMM(e.getValue(), depth - 1, newBeta, newAlpha);
+          int moveUtil = -inter.utility;
+          newBeta = Integer.min(newBeta, moveUtil);
+          
+          if (moveUtil > resultUtil){
+            result = inter.move;
+            resultUtil = moveUtil;
+          }
         }
         
-        /* if the player changes between turns, we need to update the utility
-         * so that it's from the current player's perspective (which is done
-         * simply by negating the old utility)  */
-        int samePlayerMultiplier = 
-            e.getValue().getActivePlayer() == activePlayer ? 1 : -1;
         
-        int moveUtil = samePlayerMultiplier * intermediate.utility;
-         
-        if (moveUtil > resultUtil){
-          result = intermediate.move;
-          resultUtil = intermediate.utility;
+        
+        if (newBeta <= newAlpha){
+          break;
         }
       }
+
       /* this seems a little silly--I should probably just keep a copy of the
        * best MMIntermediate I generate and just return that */
       return new MMIntermediate(result, resultUtil);
@@ -161,13 +171,12 @@ public class MMBot implements Bot {
     Move lastGeneratedMove = moveIter.next();
     int depth = 1;
     
-    /* for simplicity's sake, Im going to let the bot take slightly longer than
+    /* for simplicity's sake, I'm going to let the bot take slightly longer than
      * its alloted time, and then return the result that a more strictly timed 
      * bot would have returned. In the future, we should consider using some
      * concurrency magic to kill the process at exactly the right time. */
     while ((getCurrentTime() - startTime) <= time){
       secondLastGeneratedMove = lastGeneratedMove;
-      /* TODO: double-check alpha and beta choices: */
       lastGeneratedMove = 
         (Move) fixedDepthMM(state, depth, Integer.MIN_VALUE, Integer.MAX_VALUE);
       depth++;
@@ -180,7 +189,6 @@ public class MMBot implements Bot {
     if (timed) {
       return timedMM(s, time);
     } else {
-      /* TODO: double check use of alpha beta args */
       return fixedDepthMM(s, depth, Integer.MIN_VALUE, Integer.MAX_VALUE).move;
     }
   }
