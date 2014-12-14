@@ -39,7 +39,7 @@ public class EvalFunction {
 		
 		int result = k + h + b;
 		
-		System.out.println("hi " + result);
+		System.out.println("State of Board " + result);
 		return result;
 	}
 	
