@@ -94,6 +94,47 @@ public class KalahState implements State {
     return result;
   }
   
+  /* returns the index of the pit opposite the provided index [n] */
+  private int opposingPitNum(int n) throws IllegalArgumentException {
+    if (n <= 0 || n == 7 || n > 13 ){
+      String msg = "opposingPitCountNum expects an integer argument corresponding "
+                 + "to a house, but received " + n;
+      throw new IllegalArgumentException(msg);
+    } else {
+      /* oopsie, this is kind of difficult to understand--maybe this diagram of
+       * a kalah board with the pits numbered according to our indexing scheme
+       * will help make sense of it:
+       * 
+       *    | 13 12 11 10 09 08 |
+       * 00 |                   | 07
+       *    | 01 02 03 04 05 06 | 
+       * 
+       * try finding the pit opposite of 2, and then try finding the one 
+       * opposite of 13.
+       * */
+      int diff = n - 7;
+      return 7 - diff;
+    }
+  }
+  
+  /* given the index of the last seed sown and the active player, checks whether
+   * a capture should occur  */
+  private boolean captureTriggered(int lastSeedSownLoc, Player activePlayer){
+    int activePlayerKalahNum = (activePlayer == Player.ONE) ? 7 : 0;
+    
+    boolean InEmptyPit = pits[lastSeedSownLoc] == 1;
+    boolean NotInOwnKalah = lastSeedSownLoc != activePlayerKalahNum;
+    
+    boolean NotInOpposingKalah = 
+      (activePlayer == Player.ONE && lastSeedSownLoc >= 1 && lastSeedSownLoc <= 6)
+      || (activePlayer == Player.TWO && lastSeedSownLoc >= 8 && lastSeedSownLoc <= 13);
+
+    boolean opposingKalahHasSeeds = pits[opposingPitNum(lastSeedSownLoc)] != 0;
+    
+    
+    return InEmptyPit && NotInOwnKalah && NotInOpposingKalah && opposingKalahHasSeeds;
+  }
+  
   private KalahState sow(KalahMove m){
     int houseNum = m.getHouseNumber();
     int startingPitNum = 
@@ -110,17 +151,34 @@ public class KalahState implements State {
     Player nextActivePlayer;
     
     while (stones > 0){
-      currentPitNum++;
+      if (currentPitNum == 13){
+        currentPitNum = 0;
+      } else {
+        currentPitNum++;
+      }
       if (currentPitNum != opponentKalahNum){
         pits[currentPitNum]++;
         stones--;
       }
     }
     
-    nextActivePlayer = 
-      (currentPitNum == playerKalahNum) ? activePlayer : activePlayer.next();
     
-    /*TODO add rules for capturing an opponent's stones*/
+    /* rule for capturing opposing kalah's stones */
+    if(captureTriggered(currentPitNum, activePlayer)) {
+      /* move the last seed sown, and the seeds in the opposing house to 
+       * current player's Kalah */
+      
+      pits[currentPitNum] = 0;
+  
+      int opposingPitSeeds = pits[opposingPitNum(currentPitNum)];
+      pits[opposingPitNum(currentPitNum)] = 0;
+      
+      pits[playerKalahNum] = 1 + opposingPitSeeds;
+      
+    }
+    
+    nextActivePlayer = 
+        (currentPitNum == playerKalahNum) ? activePlayer : activePlayer.next();
     
     return new KalahState(pits, nextActivePlayer);
     

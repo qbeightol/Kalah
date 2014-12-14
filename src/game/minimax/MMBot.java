@@ -68,7 +68,7 @@ public class MMBot implements Bot {
   
   /* private utility functions ***********************************************/
   
-  private MMIntermediate fixedDepthMM(State state, int depth){
+  private MMIntermediate fixedDepthMM(State state, int depth, int alpha, int beta){
     if (depth <= 0) {
       String msg = "minimax should be called with a positive depth";
       throw new IllegalArgumentException(msg);
@@ -97,6 +97,11 @@ public class MMBot implements Bot {
       
       return new MMIntermediate(result, resultUtil);
     } else {
+      // TODO implement code for updating alpha and beta values
+      // TODO consider re-factoring code
+      // TODO 
+      
+      
       /* since none of the other if blocks were triggered, depth >= 2 and the
        * current state has successors */
       Player activePlayer = state.getActivePlayer();
@@ -106,13 +111,13 @@ public class MMBot implements Bot {
       /* clean up:*/
       int resultUtil;
       if (succs.get(result).getActivePlayer() == activePlayer) {
-        resultUtil = fixedDepthMM(succs.get(result), depth - 1).utility;
+        resultUtil = fixedDepthMM(succs.get(result), depth - 1, alpha, beta).utility;
       } else {
-        resultUtil = -fixedDepthMM(succs.get(result), depth - 1).utility;
+        resultUtil = -fixedDepthMM(succs.get(result), depth - 1, alpha, beta).utility;
       }
       
       for (Entry<Move, State> e : succs.entrySet()){
-        MMIntermediate intermediate = fixedDepthMM(e.getValue(), depth - 1);
+        MMIntermediate intermediate = fixedDepthMM(e.getValue(), depth - 1, alpha, beta);
         
         /* if the player changes between turns, we need to update the utility
          * so that it's from the current player's perspective (which is done
