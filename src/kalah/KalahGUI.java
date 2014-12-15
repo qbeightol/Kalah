@@ -227,10 +227,10 @@ public class KalahGUI extends JFrame implements MouseListener {
 	    	System.out.println("Random Bot vs Human");
 			start1 = true;
 			while (i<14) {
-				if (((KalahState) kg.currentState()).getActivePlayer() == p1) {
-			    	  kg.applyMove(randomBot.requestMove(kg.currentState()));
-			    	  repaint();
-				} else 
+//				if (((KalahState) kg.currentState()).getActivePlayer() == p1) {
+//			    	  kg.applyMove(randomBot.requestMove(kg.currentState()));
+//			    	  repaint();
+//				} else 
 				if ((i>7) && (i<14) && (((KalahState) kg.currentState()).getActivePlayer() == p2) ) {		
 					if ((e.getButton() == 1) && drawn[i].contains(e.getX(), e.getY()) ) {
 						System.out.println("clicked pit " + i);
@@ -244,10 +244,10 @@ public class KalahGUI extends JFrame implements MouseListener {
 	    	System.out.println("Human vs Random");
 			start1 = true;
 			while (i<14) {
-				if (((KalahState) kg.currentState()).getActivePlayer() == p2) {
-			    	  kg.applyMove(randomBot.requestMove(kg.currentState()));
-			    	  repaint();
-				} else 
+//				if (((KalahState) kg.currentState()).getActivePlayer() == p2) {
+//			    	  kg.applyMove(randomBot.requestMove(kg.currentState()));
+//			    	  repaint();
+//				} else 
 				if ((i>0) && (i<7) && (((KalahState) kg.currentState()).getActivePlayer() == p1) ) {
 					if ((e.getButton() == 1) && drawn[i].contains(e.getX(), e.getY()) ) {
 						System.out.println("clicked pit " + i);
@@ -261,10 +261,10 @@ public class KalahGUI extends JFrame implements MouseListener {
 	    	System.out.println("Intermediate Bot vs Human");
 			start1 = true;
 			while (i<14) {
-				if (((KalahState) kg.currentState()).getActivePlayer() == p1) {
-			    	  kg.applyMove(interBot.requestMove(kg.currentState()));
-			    	  repaint();
-				} else 
+//				if (((KalahState) kg.currentState()).getActivePlayer() == p1) {
+//			    	  kg.applyMove(interBot.requestMove(kg.currentState()));
+//			    	  repaint();
+//				} else 
 				if ((i>7) && (i<14) && (((KalahState) kg.currentState()).getActivePlayer() == p2) ) {		
 					if ((e.getButton() == 1) && drawn[i].contains(e.getX(), e.getY()) ) {
 						System.out.println("clicked pit " + i);
@@ -278,10 +278,10 @@ public class KalahGUI extends JFrame implements MouseListener {
 	    	System.out.println("Human vs Random");
 			start1 = true;
 			while (i<14) {
-				if (((KalahState) kg.currentState()).getActivePlayer() == p2) {
-			    	  kg.applyMove(interBot.requestMove(kg.currentState()));
-			    	  repaint();
-				} else 
+//				if (((KalahState) kg.currentState()).getActivePlayer() == p2) {
+//			    	  kg.applyMove(interBot.requestMove(kg.currentState()));
+//			    	  repaint();
+//				} else 
 				if ((i>0) && (i<7) && (((KalahState) kg.currentState()).getActivePlayer() == p1) ) {
 					if ((e.getButton() == 1) && drawn[i].contains(e.getX(), e.getY()) ) {
 						System.out.println("clicked pit " + i);
@@ -295,10 +295,10 @@ public class KalahGUI extends JFrame implements MouseListener {
 	    	System.out.println("Intermediate Bot vs Human");
 			start1 = true;
 			while (i<14) {
-				if (((KalahState) kg.currentState()).getActivePlayer() == p1) {
-			    	  kg.applyMove(mmBot.requestMove(kg.currentState()));
-			    	  repaint();
-				} else 
+//				if (((KalahState) kg.currentState()).getActivePlayer() == p1) {
+//			    	  kg.applyMove(mmBot.requestMove(kg.currentState()));
+//			    	  repaint();
+//				} else 
 				if ((i>7) && (i<14) && (((KalahState) kg.currentState()).getActivePlayer() == p2) ) {		
 					if ((e.getButton() == 1) && drawn[i].contains(e.getX(), e.getY()) ) {
 						System.out.println("clicked pit " + i);
@@ -312,10 +312,10 @@ public class KalahGUI extends JFrame implements MouseListener {
 	    	System.out.println("Human vs Random");
 			start1 = true;
 			while (i<14) {
-				if (((KalahState) kg.currentState()).getActivePlayer() == p2) {
-			    	  kg.applyMove(mmBot.requestMove(kg.currentState()));
-			    	  repaint();
-				} else 
+//				if (((KalahState) kg.currentState()).getActivePlayer() == p2) {
+//			    	  kg.applyMove(mmBot.requestMove(kg.currentState()));
+//			    	  repaint();
+//				} else 
 				if ((i>0) && (i<7) && (((KalahState) kg.currentState()).getActivePlayer() == p1) ) {
 					if ((e.getButton() == 1) && drawn[i].contains(e.getX(), e.getY()) ) {
 						System.out.println("clicked pit " + i);
@@ -392,6 +392,68 @@ public class KalahGUI extends JFrame implements MouseListener {
 			g2d.setColor(Color.BLACK);
 			g2d.drawString("State Evaluation (of player 1): "+ currentEval(), 10, 475);
 			g2d.drawString("Player: "+ kg.currentState().getActivePlayer(), 10, 450);
+			
+			if (r3.isSelected()&&rr4.isSelected()) {
+		    	System.out.println("Random Bot vs Human");
+				//start1 = true;
+				while (i<14) {
+					if (((KalahState) kg.currentState()).getActivePlayer() == p1) {
+				    	  kg.applyMove(randomBot.requestMove(kg.currentState()));
+				    	  repaint();
+					}
+					i++;
+			   }
+		    } else if (r4.isSelected()&&rr3.isSelected()) {
+		    	System.out.println("Human vs Random");
+				//start1 = true;
+				while (i<14) {
+					if (((KalahState) kg.currentState()).getActivePlayer() == p2) {
+				    	  kg.applyMove(randomBot.requestMove(kg.currentState()));
+				    	  repaint();
+					} 
+					i++;
+			   }
+		    } else if (r2.isSelected()&&rr4.isSelected()) {
+		    	System.out.println("Intermediate Bot vs Human");
+				//start1 = true;
+				while (i<14) {
+					if (((KalahState) kg.currentState()).getActivePlayer() == p1) {
+				    	  kg.applyMove(interBot.requestMove(kg.currentState()));
+				    	  repaint();
+					} 
+					i++;
+			   }
+		    } else if (r4.isSelected()&&rr2.isSelected()) {
+		    	System.out.println("Human vs Random");
+				//start1 = true;
+				while (i<14) {
+					if (((KalahState) kg.currentState()).getActivePlayer() == p2) {
+				    	  kg.applyMove(interBot.requestMove(kg.currentState()));
+				    	  repaint();
+					} 
+					i++;
+			   }
+		    } else if (r1.isSelected()&&rr4.isSelected()) {
+		    	System.out.println("Intermediate Bot vs Human");
+				//start1 = true;
+				while (i<14) {
+					if (((KalahState) kg.currentState()).getActivePlayer() == p1) {
+				    	  kg.applyMove(mmBot.requestMove(kg.currentState()));
+				    	  repaint();
+					} 
+					i++;
+			   }
+		    } else if (r4.isSelected()&&rr1.isSelected()) {
+		    	System.out.println("Human vs Random");
+				//start1 = true;
+				while (i<14) {
+					if (((KalahState) kg.currentState()).getActivePlayer() == p2) {
+				    	  kg.applyMove(mmBot.requestMove(kg.currentState()));
+				    	  repaint();
+					} 
+					i++;
+			   }
+		    }
 		}
 	}
 	
