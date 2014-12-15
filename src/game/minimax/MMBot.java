@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Future;
 
+import kalah.KalahMove;
 import game.Bot;
 import game.Move;
 import game.Player;
@@ -48,7 +49,7 @@ public class MMBot implements Bot {
   
   /* produces a bot that will go down to the specified depth, possibly using 
    * alpha-beta pruning to speed up the analysis */
-  public static MMBot untimedMMBot(int depth, boolean alphaBeta){
+  public static MMBot untimed(int depth, boolean alphaBeta){
     if (depth <= 0){
       String msg = "untimed MMBots expect a depth argument greater than 0, but "
                  + "received a depth of " + depth;
@@ -60,7 +61,7 @@ public class MMBot implements Bot {
   /* returns a bot that runs for the specified time in ms--possibly using 
    * alpha-beta pruning and then returns a move. Out of necessity the bot uses
    * iterative deepening to ensure that it can always produce a move */
-  public static MMBot timedMMBot(int time, boolean alphaBeta){
+  public static MMBot timed(int time, boolean alphaBeta){
     if (time <= 0){
       String msg = "timed MMBots expect a time argument greater than 0, but "
                  + "received a time of " + time;
@@ -78,6 +79,7 @@ public class MMBot implements Bot {
     } else if (state.isTerminal()){
       String msg = "minimax should be called on non-terminal states";
       throw new IllegalArgumentException(msg);
+      //return state.utility(state.getActivePlayer());
     } else if (state.successors().isEmpty()){
       String msg = "the supplied game's current state has no successors";
       throw new IllegalArgumentException(msg);
@@ -111,43 +113,72 @@ public class MMBot implements Bot {
       
       /* clean up:*/
       int resultUtil;
-      if (succs.get(result).getActivePlayer() == activePlayer) {
-        resultUtil = fixedDepthMM(succs.get(result), depth - 1, alpha, beta).utility;
-      } else {
-        resultUtil = -fixedDepthMM(succs.get(result), depth - 1, alpha, beta).utility;
+      try {
+        if (succs.get(result).getActivePlayer() == activePlayer) {
+          resultUtil = fixedDepthMM(succs.get(result), depth - 1, alpha, beta).utility;
+        } else {
+          resultUtil = -fixedDepthMM(succs.get(result), depth - 1, alpha, beta).utility;
+  
+        }
+      } catch (Exception dontCare) {
+        resultUtil = succs.get(result).utility(activePlayer);
       }
-      
       
       int newAlpha = alpha;
       int newBeta = beta;
-      
-      
+
       for (Entry<Move, State> e : succs.entrySet()){
+        //System.out.println(((KalahMove) e.getKey()).getHouseNumber());
         /* if the player didn't change between turns */
         if (e.getValue().getActivePlayer() == activePlayer){
-          MMIntermediate inter = fixedDepthMM(e.getValue(), depth - 1, newAlpha, newBeta);
-          int moveUtil = inter.utility;
-          newAlpha = Integer.max(newAlpha, moveUtil);
-          
-          if (moveUtil > resultUtil){
-            result = inter.move;
-            resultUtil = moveUtil;
+          try {
+            MMIntermediate inter = fixedDepthMM(e.getValue(), depth - 1, newAlpha, newBeta);
+            int moveUtil = inter.utility;
+            newAlpha = Integer.max(newAlpha, moveUtil);
+            
+            if (moveUtil > resultUtil){
+              //result = inter.move;
+              result = e.getKey();
+              resultUtil = moveUtil;
+            }
+          } catch (Exception dontCare) {
+            int moveUtil = e.getValue().utility(activePlayer);
+            newAlpha = Integer.max(newAlpha, moveUtil);
+            
+            if (moveUtil > resultUtil){
+              result = e.getKey();
+              resultUtil = moveUtil;
+            }
+            
           }
           
         } else {
-          MMIntermediate inter = fixedDepthMM(e.getValue(), depth - 1, newBeta, newAlpha);
-          int moveUtil = -inter.utility;
-          newBeta = Integer.min(newBeta, moveUtil);
+          try {
+            MMIntermediate inter = fixedDepthMM(e.getValue(), depth - 1, newBeta, newAlpha);
+            int moveUtil = -inter.utility;
+            newBeta = Integer.min(newBeta, moveUtil);
           
-          if (moveUtil > resultUtil){
-            result = inter.move;
-            resultUtil = moveUtil;
+            if (moveUtil > resultUtil){
+              //result = inter.move;
+              result = e.getKey();
+              resultUtil = moveUtil;
+            }
+          } catch (Exception dontCare){
+            int moveUtil = -e.getValue().utility(activePlayer);
+            newBeta = Integer.min(newBeta, moveUtil);
+            
+            if (moveUtil > resultUtil){
+              result = e.getKey();
+              resultUtil = moveUtil;
+            }
+            
           }
+          
         }
         
     
         
-        if (newBeta <= newAlpha){
+        if (alphaBeta && newBeta <= newAlpha){
           break;
         }
       }
@@ -168,19 +199,21 @@ public class MMBot implements Bot {
     long startTime = getCurrentTime();
     Iterator<Move> moveIter = state.successors().keySet().iterator();
     Move secondLastGeneratedMove = moveIter.next();
-    Move lastGeneratedMove = moveIter.next();
-    int depth = 1;
-    
-    /* for simplicity's sake, I'm going to let the bot take slightly longer than
-     * its alloted time, and then return the result that a more strictly timed 
-     * bot would have returned. In the future, we should consider using some
-     * concurrency magic to kill the process at exactly the right time. */
-    while ((getCurrentTime() - startTime) <= time){
-      secondLastGeneratedMove = lastGeneratedMove;
-      lastGeneratedMove = 
-        (Move) fixedDepthMM(state, depth, Integer.MIN_VALUE, Integer.MAX_VALUE);
-      depth++;
-    }
+    try {
+      Move lastGeneratedMove = moveIter.next();
+      int depth = 1;
+      
+      /* for simplicity's sake, I'm going to let the bot take slightly longer than
+       * its alloted time, and then return the result that a more strictly timed 
+       * bot would have returned. In the future, we should consider using some
+       * concurrency magic to kill the process at exactly the right time. */
+      while ((getCurrentTime() - startTime) <= time){
+        secondLastGeneratedMove = lastGeneratedMove;
+        lastGeneratedMove = 
+          (Move) fixedDepthMM(state, depth, Integer.MIN_VALUE, Integer.MAX_VALUE).move;
+        depth++;
+      }
+    } catch (Exception dontCare) {}
 
     return secondLastGeneratedMove;
   }

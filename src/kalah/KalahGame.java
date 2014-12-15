@@ -29,8 +29,18 @@ public class KalahGame implements Game {
     if (succs.keySet().contains(m)) {
       this.currentState = (KalahState) succs.get(m);
     } else {
-      String msg = "the provided move isn't legal (are you sure you supplied"
-                 + " a KalahMove?)";
+      String msg;
+      try {
+        msg = "received this move: " + ((KalahMove) m).getHouseNumber()
+            + " but only these were available: ";
+        for (Move mv : succs.keySet()){
+          msg = msg + ((KalahMove) mv).getHouseNumber() + ", ";
+        }
+      } catch (Exception dontCare) {
+        msg = "the provided move isn't legal (are you sure you supplied"
+            + " a KalahMove?)";
+      } 
+      
       throw new IllegalArgumentException(msg);
     }
   }
