@@ -29,6 +29,7 @@ public class Main {
         kg.applyMove(p2.requestMove(currentState));
       }
     }
+
     
     kg.printKalahGameInfo();
     kg.currentKalahState().report();
