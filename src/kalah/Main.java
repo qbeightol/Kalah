@@ -19,16 +19,16 @@ public class Main {
     
     //kg.applyMove(p1.requestMove(kg.currentState()));
     
-    while (!kg.currentKalahState().isTerminal()){
-      kg.printKalahGameInfo();
-      State currentState = kg.currentState();
-      if (currentState.getActivePlayer() == Player.ONE){
-        System.out.println(((KalahMove) p1.requestMove(currentState)).getHouseNumber());
-        kg.applyMove(p1.requestMove(currentState));
-      } else{
-        kg.applyMove(p2.requestMove(currentState));
-      }
-    }
+//    while (!kg.currentKalahState().isTerminal()){
+//      kg.printKalahGameInfo();
+//      State currentState = kg.currentState();
+//      if (currentState.getActivePlayer() == Player.ONE){
+//        System.out.println(((KalahMove) p1.requestMove(currentState)).getHouseNumber());
+//        kg.applyMove(p1.requestMove(currentState));
+//      } else{
+//        kg.applyMove(p2.requestMove(currentState));
+//      }
+//    }
     
     kg.printKalahGameInfo();
     kg.currentKalahState().report();

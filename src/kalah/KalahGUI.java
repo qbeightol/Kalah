@@ -33,7 +33,7 @@ public class KalahGUI extends JFrame implements MouseListener {
 	private KalahGame kg = new KalahGame();
 	private SimpleBot interBot = new SimpleBot();
 	private RandomBot randomBot = new RandomBot();
-	private MMBot mmBot = MMBot.timedMMBot(500, false);
+	private MMBot mmBot = MMBot.timed(500, false);
 	Random rand = new Random();
 	Random randomN = new Random();
 	//private KalahState m = (KalahState) kg.currentState();
