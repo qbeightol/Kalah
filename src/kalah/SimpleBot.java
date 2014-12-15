@@ -70,7 +70,7 @@ public class SimpleBot implements game.Bot {
   public Move requestMove(State inputState) throws IllegalArgumentException{
     
     Move currentResultMove = null;
-    int currentResultValue = 0;
+    int currentResultValue = Integer.MIN_VALUE;
     Player botPlayer = inputState.getActivePlayer();
     
     /* find the best move according to our simple heuristic, and return it */
@@ -79,6 +79,7 @@ public class SimpleBot implements game.Bot {
       KalahMove move = (KalahMove) e.getKey();
       KalahState state = (KalahState) e.getValue();
       int candidateMoveValue = simpleHeuristic (move, state, botPlayer);
+      //int candidateMoveValue = state.utility(botPlayer);
       
       //System.out.println(move.getHouseNumber());
       //System.out.println(candidateMoveValue);

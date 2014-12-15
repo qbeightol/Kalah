@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.concurrent.Future;
 
 import kalah.KalahMove;
@@ -164,7 +165,7 @@ public class MMBot implements Bot {
               resultUtil = moveUtil;
             }
           } catch (Exception dontCare){
-            int moveUtil = -e.getValue().utility(activePlayer);
+            int moveUtil = e.getValue().utility(activePlayer);
             newBeta = Integer.min(newBeta, moveUtil);
             
             if (moveUtil > resultUtil){
@@ -175,8 +176,6 @@ public class MMBot implements Bot {
           }
           
         }
-        
-    
         
         if (alphaBeta && newBeta <= newAlpha){
           break;
@@ -201,7 +200,7 @@ public class MMBot implements Bot {
     Move secondLastGeneratedMove = moveIter.next();
     try {
       Move lastGeneratedMove = moveIter.next();
-      int depth = 1;
+      int targetDepth = 1;
       
       /* for simplicity's sake, I'm going to let the bot take slightly longer than
        * its alloted time, and then return the result that a more strictly timed 
@@ -209,13 +208,23 @@ public class MMBot implements Bot {
        * concurrency magic to kill the process at exactly the right time. */
       while ((getCurrentTime() - startTime) <= time){
         secondLastGeneratedMove = lastGeneratedMove;
-        lastGeneratedMove = 
-          (Move) fixedDepthMM(state, depth, Integer.MIN_VALUE, Integer.MAX_VALUE).move;
-        depth++;
+        MMIntermediate inter = 
+            fixedDepthMM(state, targetDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        //System.out.println(inter.utility);
+        lastGeneratedMove = (Move) inter.move;
+        targetDepth++;
       }
+      
+      System.out.println("depth reached: " + targetDepth);
+      
     } catch (Exception dontCare) {}
-
-    return secondLastGeneratedMove;
+    
+    Random random = new Random();
+    if (random.nextFloat() < .03) {
+      return (Move) state.successors().keySet().toArray()[random.nextInt(state.successors().keySet().size())];
+    } else {
+      return secondLastGeneratedMove;
+    }
   }
     @Override
   public Move requestMove(State s) throws IllegalArgumentException {

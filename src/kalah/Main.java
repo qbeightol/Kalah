@@ -14,8 +14,8 @@ public class Main {
   public static void main(String[] args) {
     
     KalahGame kg = new KalahGame();
-    Bot p1 = MMBot.timed(250, true);
-    Bot p2 = new RandomBot();
+    Bot p1 = new SimpleBot();
+    Bot p2 = new SimpleBot();
     
     //kg.applyMove(p1.requestMove(kg.currentState()));
     
@@ -23,7 +23,7 @@ public class Main {
       kg.printKalahGameInfo();
       State currentState = kg.currentState();
       if (currentState.getActivePlayer() == Player.ONE){
-        System.out.println(((KalahMove) p1.requestMove(currentState)).getHouseNumber());
+        //System.out.println(((KalahMove) p1.requestMove(currentState)).getHouseNumber());
         kg.applyMove(p1.requestMove(currentState));
       } else{
         kg.applyMove(p2.requestMove(currentState));

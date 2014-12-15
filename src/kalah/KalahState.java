@@ -196,7 +196,7 @@ public class KalahState implements State {
       
       pits_copy[currentPitNum] = 0;
   
-      int opposingPitSeeds = pits[opposingPitNum(currentPitNum)];
+      int opposingPitSeeds = pits_copy[opposingPitNum(currentPitNum)];
       pits_copy[opposingPitNum(currentPitNum)] = 0;
       
       pits_copy[playerKalahNum] = pits_copy[playerKalahNum] + 1 + opposingPitSeeds;
@@ -239,6 +239,7 @@ public class KalahState implements State {
   @Override
   public int utility(Player p) {
     return this.kalahCount(p) - this.kalahCount(p.next());
+    //return simpleHeuristic(KalahMove.ofInt(6), this, p) - simpleHeuristic(KalahMove.ofInt(6), this, p.next());
   }
   
 /* Getters *******************************************************************/
@@ -265,6 +266,63 @@ public class KalahState implements State {
     int p1Score = pits[1] + pits[2] + pits[3] + pits[4] + pits[5] + pits[6] + pits[7];
     int p2Score = pits[8] + pits[9] + pits[10] + pits[11] + pits[12] + pits[13] + pits[0];
     System.out.println("P1: " + p1Score + " | P2: " + p2Score);
+  }
+  
+  /* returns an integer representing the approximate "goodness" of a move*/
+  private static int simpleHeuristic(KalahMove move, 
+                              KalahState nextState, 
+                              Player botPlayer){
+    /* weigh moves that increase your score heavily--if there's a way to capture 
+     * an oponnent's stones or to score a point, this bot will seize that 
+     * opportunity*/
+    int scoreValue = nextState.kalahCount(botPlayer) * 1000;
+    
+    /* in the event of a tie between moves that could increase a player's score,
+     * choose a move that grant's them a second turn. Notice that whenever  a 
+     * player takes a move that grants a second turn, their score increases
+     * too. Consequently, this rule and the previous one are designed to prefer
+     * captures over moves that grant a second turn, and to prefer moves that
+     * grant a second turn whenever captures aren't present */
+    int secondTurnValue = (nextState.getActivePlayer() ==  botPlayer) ? 100 : 0;
+    
+    /* to help break close ties, we'll favor moves that either clear out a
+     * player's right-most home, or maintain a higher level of free pits
+     * (which, in turn makes it easier to get a capture later on the game). 
+     * As a side note, these two heuristics aren't totally orthogonal, so 
+     * we've given them significantly less weight than the first two, and we're
+     * going to consider an alternate set of heuristics for breaking ties*/
+    int distanceToRightValue = move.getHouseNumber();
+    int emptyPitsValue = 0;
+    
+    for (int houseNum = 1; houseNum <= 6; houseNum++){
+      if (nextState.getHouseCount(botPlayer, houseNum) == 0){
+        emptyPitsValue++;
+      }
+    }
+    
+    /* following Professor Selman's recommendation, we've decided to add some
+     * randomness to our bot's decision making process--that way, if too bots
+     * play against one another repeatedly, you'll get slightly different 
+     * results, and you'll be able to get a better sense for which bot is best
+     * (in contrast to wondering whether one bot did better simply by a quirk
+     * in the way each bot made decisions) */
+    Random random = new Random();
+    
+    /* only involve a small amount of randomness--the scoreValue and 
+     * secondTurnValue define the core of this bot's strategy and I think
+     * it makes sense not to override that behavior. I'll only contest the 
+     * choices introduces by the distanceToRightValue and emptyPitsValue, since 
+     * those are somewhat arbitrary and kind of intertwined; as a side note, the
+     * standard deviation for the noise
+     * is 2, which I think is appropriately small given how heavy the tails
+     * of the distribution are. */
+    int noise = random.nextInt(7);
+    
+    int returnVal = scoreValue + secondTurnValue + distanceToRightValue
+                  + emptyPitsValue + noise;
+    
+    return returnVal;
+    
   }
   
 }
