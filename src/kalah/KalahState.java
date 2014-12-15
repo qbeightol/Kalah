@@ -269,7 +269,7 @@ public class KalahState implements State {
   }
   
   /* returns an integer representing the approximate "goodness" of a move*/
-  private static int simpleHeuristic(KalahMove move, 
+  public static int simpleHeuristic(KalahMove move, 
                               KalahState nextState, 
                               Player botPlayer){
     /* weigh moves that increase your score heavily--if there's a way to capture 

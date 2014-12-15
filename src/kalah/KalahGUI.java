@@ -166,7 +166,7 @@ public class KalahGUI extends JFrame implements MouseListener {
 					System.out.println("Human vs Human");
 					start1 = true;
 				} else {
-					JOptionPane.showMessageDialog(null, "Please pick your players. PS GUI does not support two robots.");
+					JOptionPane.showMessageDialog(null, "Please pick your players. Also, GUI does not support two robots.");
 				}
 				
 				
@@ -390,8 +390,10 @@ public class KalahGUI extends JFrame implements MouseListener {
 			}
 			currentEval();
 			g2d.setColor(Color.BLACK);
-			g2d.drawString("State Evaluation (of player 1): "+ currentEval(), 10, 475);
+			g2d.drawString("State Evaluation (of player 1) (0-4900): "+ KalahState.simpleHeuristic(KalahMove.ofInt(1), kg.currentKalahState(), kg.currentState().getActivePlayer()), 10, 475);
 			g2d.drawString("Player: "+ kg.currentState().getActivePlayer(), 10, 450);
+			g2d.drawString("Player TWO", 300, 100);
+			g2d.drawString("Player ONE", 300, 400);
 			
 			if (r3.isSelected()&&rr4.isSelected()) {
 		    	System.out.println("Random Bot vs Human");
@@ -493,7 +495,6 @@ public class KalahGUI extends JFrame implements MouseListener {
 		if (KalahGUI.start1) {
 			int k = ((KalahState) kg.currentState()).kalahCount(KalahGUI.p1) - ((KalahState) kg.currentState()).kalahCount(KalahGUI.p2);
 			int h = 0;
-			// TODO implement capture
 			int b = 0;
 			int c = 0;
 			while (c<6) {
