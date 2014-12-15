@@ -120,18 +120,22 @@ public class KalahState implements State {
   
   /* given the index of the last seed sown and the active player, checks whether
    * a capture should occur  */
-  private boolean captureTriggered(int lastSeedSownLoc, Player activePlayer){
+  private boolean captureTriggered(int[] board, int lastSeedSownLoc, Player activePlayer){
     int activePlayerKalahNum = (activePlayer == Player.ONE) ? 7 : 0;
     
-    boolean InEmptyPit = pits[lastSeedSownLoc] == 1;
+    boolean InEmptyPit = board[lastSeedSownLoc] == 1;
     boolean NotInOwnKalah = lastSeedSownLoc != activePlayerKalahNum;
     
     boolean NotInOpposingKalah = 
       (activePlayer == Player.ONE && lastSeedSownLoc >= 1 && lastSeedSownLoc <= 6)
       || (activePlayer == Player.TWO && lastSeedSownLoc >= 8 && lastSeedSownLoc <= 13);
 
-    boolean opposingKalahHasSeeds = NotInOwnKalah && pits[opposingPitNum(lastSeedSownLoc)] != 0;
+    boolean opposingKalahHasSeeds = NotInOwnKalah && board[opposingPitNum(lastSeedSownLoc)] != 0;
     
+    //System.out.println(InEmptyPit);
+    //System.out.println(NotInOwnKalah);
+    //System.out.println(NotInOpposingKalah);
+    //System.out.println(opposingKalahHasSeeds);
     
     return InEmptyPit && NotInOwnKalah && NotInOpposingKalah && opposingKalahHasSeeds;
   }
@@ -186,18 +190,18 @@ public class KalahState implements State {
     
     /* rule for capturing opposing kalah's stones */
     
-//    if(captureTriggered(currentPitNum, activePlayer)) {
-//      /* move the last seed sown, and the seeds in the opposing house to 
-//       * current player's Kalah */
-//      
-//      pits_copy[currentPitNum] = 0;
-//  
-//      int opposingPitSeeds = pits[opposingPitNum(currentPitNum)];
-//      pits_copy[opposingPitNum(currentPitNum)] = 0;
-//      
-//      pits_copy[playerKalahNum] = 1 + opposingPitSeeds;
-//      
-//    }
+    if(captureTriggered(pits_copy, currentPitNum, activePlayer)) {
+      /* move the last seed sown, and the seeds in the opposing house to 
+       * current player's Kalah */
+      
+      pits_copy[currentPitNum] = 0;
+  
+      int opposingPitSeeds = pits[opposingPitNum(currentPitNum)];
+      pits_copy[opposingPitNum(currentPitNum)] = 0;
+      
+      pits_copy[playerKalahNum] = pits_copy[playerKalahNum] + 1 + opposingPitSeeds;
+      
+    }
     
     nextActivePlayer = 
         (currentPitNum == playerKalahNum) ? activePlayer : activePlayer.next();

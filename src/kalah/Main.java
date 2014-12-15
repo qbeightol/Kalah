@@ -1,5 +1,10 @@
 package kalah;
 
+import game.Bot;
+import game.Player;
+import game.RandomBot;
+import game.State;
+
 import java.util.Arrays;
 
 
@@ -8,9 +13,26 @@ public class Main {
   public static void main(String[] args) {
     
     KalahGame kg = new KalahGame();
+    Bot p1 = new SimpleBot();
+    Bot p2 = new RandomBot();
+    
+    //kg.applyMove(p1.requestMove(kg.currentState()));
+    
+    while (!kg.currentKalahState().isTerminal()){
+      kg.printKalahGameInfo();
+      State currentState = kg.currentState();
+      if (currentState.getActivePlayer() == Player.ONE){
+        kg.applyMove(p1.requestMove(currentState));
+      } else{
+        kg.applyMove(p2.requestMove(currentState));
+      }
+    }
+    
     kg.printKalahGameInfo();
-    kg.applyMove(KalahMove.ofInt(6));
-    kg.printKalahGameInfo();
+    
+    //kg.printKalahGameInfo();
+    //kg.applyMove(KalahMove.ofInt(6));
+    //kg.printKalahGameInfo();
 
 	  KalahGUI mankalah = new KalahGUI();
       mankalah.setVisible(true);

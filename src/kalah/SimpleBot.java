@@ -80,12 +80,17 @@ public class SimpleBot implements game.Bot {
       KalahState state = (KalahState) e.getValue();
       int candidateMoveValue = simpleHeuristic (move, state, botPlayer);
       
+      //System.out.println(move.getHouseNumber());
+      //System.out.println(candidateMoveValue);
+      
       if (candidateMoveValue >= currentResultValue) {
-        currentResultMove = e.getKey();
+        currentResultMove = (Move) move;
+        currentResultValue = candidateMoveValue;
       }
     }
     
     if (currentResultMove != null) {
+      //System.out.println("> SimpleBot chose: " + ((KalahMove) currentResultMove).getHouseNumber());
       return currentResultMove;
     } else {
       String msg = "No legal moves (you may have provided a terminal state to "
