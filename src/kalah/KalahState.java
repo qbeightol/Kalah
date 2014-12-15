@@ -238,8 +238,7 @@ public class KalahState implements State {
 
   @Override
   public int utility(Player p) {
-    // TODO Auto-generated method stub
-    return 0;
+    return this.kalahCount(p) - this.kalahCount(p.next());
   }
   
 /* Getters *******************************************************************/
@@ -261,4 +260,11 @@ public class KalahState implements State {
     }
   }
 
+/* Other useful things *******************************************************/
+  public void report(){
+    int p1Score = pits[1] + pits[2] + pits[3] + pits[4] + pits[5] + pits[6] + pits[7];
+    int p2Score = pits[8] + pits[9] + pits[10] + pits[11] + pits[12] + pits[13] + pits[0];
+    System.out.println("P1: " + p1Score + " | P2: " + p2Score);
+  }
+  
 }
